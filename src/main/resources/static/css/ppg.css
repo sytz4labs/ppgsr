@@ -1,0 +1,200 @@
+.linksA {
+	color: #003366;
+}
+
+body {
+	background-repeat:repeat-x;
+	font-size: 16px;
+	font-family: arial, helvetica, Geneva, Swiss, sans-serif;
+	xxxline-height: 12px;
+	margin: 0 0 0 0;
+	background-color: #f8f8f8;
+}
+
+a {
+	font-size: 14px;
+	font-family: arial, helvetica, Geneva, Swiss, sans-serif;
+	line-height: 16px;
+}
+
+#progDocLinks, #homeLinks, #prodLinks, #supportLinks, #uatLinks, #intLinks, #sysLinks {
+	display: none
+}
+
+#header {
+	font-size: 24px;
+	font-weight: bold;
+	color: rgb(49,105,181);
+	display: block;
+	width: 100%;
+	padding: 5;
+	margin: 10 5 5 5;
+	height: 32px;
+	}
+
+#headerText {
+	font-size: 24px;
+	font-weight: bold;
+	xfloat: left;
+	color: rgb(49,105,181);
+	padding: 10px 5px;
+}
+
+#headerLogin {
+	xfloat: right;
+	font-weight: bold;
+	color: rgb(49,105,181);
+	padding: 13px 5px;
+}
+
+#headline {
+	border-top-color: #135;
+	background-color: #36c;
+	border-bottom-color: #1ac;
+	border-width: 3 0 3 0;
+	border-style: solid;
+	font-size: 4px;
+	margin-bottom: 10px;
+}
+
+#contents, #content {
+	margin-left: 5px;
+	float: left;
+}
+
+#column1, #column2, #column3, #column4, #column5, .column {
+	margin-right: 5px;
+	float: left;
+	border:solid 1px gray;
+	width:200px;
+}
+
+#contents {
+	margin-left: 5px;
+	float: left;
+	border:solid 1px gray;
+	width:150px;
+}
+
+#page {
+	margin: 10 10 10 10;
+	}
+
+.ppgsError
+{
+	color: #c00;
+	font-weight: bold;
+}
+
+.ppgsSuccess
+{
+	color: #0a0;
+	font-weight: bold;
+}
+
+.ppgsTextEdit
+{
+	border: solid 1px #7695B2;
+	margin: 0px;
+	float: left;
+	width: 10em;
+	padding-left:2px;
+	padding-top:1px;
+}
+
+p {
+	padding: 0px;
+	margin: 0 0 0 10px;
+	}
+
+h1 {
+	font-size: 1.5em;
+	padding: 5px
+	}
+
+h2 {
+	font-size: 1.25em;
+	padding: 5px;
+	border-width: 5;
+	margin: 0;
+	}
+
+h3 {
+	font-size: 1.0em;
+	padding: 7px;
+	position: relative;
+	margin: 0;
+	}
+
+.chapter {
+	margin-top: 0;
+	margin-bottom: 3px;
+	font-sixe: 10px;
+	padding: 3px
+	}
+
+.tbl-selectable {
+	cursor: pointer;
+	border-collapse: collapse;
+}
+.tbl-selectable th, .tbl-selectable td {
+	white-space:nowrap;
+	border-bottom: 1px solid #CCCCCC;
+	padding: 3px 3px;
+}
+.tbl-odd {
+	background-color: #eef;
+}
+.tbl-hover {
+	background-color: #aac2ff;
+}
+.tbl-selected {
+	background-color: #8abbff;
+}
+
+th {
+	text-align: left;
+	vertical-align:top;
+}
+
+tr.bordered {
+	 border-bottom: 1px solid #ccc;
+}
+
+.ezCalendar {
+	position: absolute;
+	background: #fff;
+	z-index: 100;
+	border: 2px solid #37b;
+	border-spacing: 0px;
+	cursor: pointer;
+}
+
+.ezCalendar th {
+	background-color: #37b;
+	color: #fff;
+	text-align: center;
+}
+
+.ezCalendar td {
+	width: 24px;
+	text-align: center;
+}
+
+.ezCalendar td:HOVER {
+	background: #ff8;
+}
+
+.ezCalendar td.val {
+	border-color: #000;
+	border: 1px solid;
+}
+
+.ezCalendar td.today {
+	font-weight: bold;
+}
+
+.ezCalendar a, a:visited {
+	text-decoration: none;
+	color: inherit;
+}

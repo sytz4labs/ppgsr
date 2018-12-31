@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: pss
+  datasource:
+    url: jdbc:h2:c:/my/db/pss3
+    username: sa
+    password: famogo
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /pssdb
+  session:
+    store-type: hash-map
+      
+ppgs:
+  hsts: false

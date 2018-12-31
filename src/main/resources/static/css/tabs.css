@@ -1,0 +1,92 @@
+.s4lTabs {
+	text-align:left;
+}
+
+
+.s4lTabs .s4lTab {
+	border:1px #cccccc solid;
+	border-bottom:none;
+	margin-right:1px;
+	padding:5px 20px 5px 20px;
+	cursor:pointer;
+	float:left;
+	color:#ffffff;
+	font-weight:bold;
+	font-size:16px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#3169B5), to(#8abbff)); /* For WebKit (Safari, Google Chrome etc) */
+	background: -moz-linear-gradient(top, #3169B5, #8abbff); /* For Mozilla/Gecko (Firefox etc) */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#3169B5, endColorstr=#8abbff);/* For Internet Explorer 5.5 - 7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#3169B5, endColorstr=#8abbff)";/* For Internet Explorer 8 */
+}
+
+.s4lTabs .s4lSelected {
+	color:#3169B5;
+	background-color:#ffffff;
+	background-image:none;
+	background:#ffffff none;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff);/* For Internet Explorer 5.5 - 7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff)";/* For Internet Explorer 8 */
+}
+
+.s4lTabs .s4lFill {
+	border:none;
+	border-bottom:1px #cccccc solid;
+	display:block;
+	background-image:none;
+	float:none;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00ffffff, endColorstr=#00ffffff);/* For Internet Explorer 5.5 - 7 first 2 00 is for opacity % 00=transparent*/
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00ffffff, endColorstr=#00ffffff)";/* For Internet Explorer 8 first 2 00 is for opacity % 00=transparent*/
+}
+
+.s4lTabsContent {
+	border:1px #cccccc solid;
+	border-top:none;
+	background-color:#ffffff;
+	text-align:left;
+	position:relative;
+	top:-1px;
+	padding: 6px;
+}
+
+.s4lTabs .s4lTabsContent {
+	clear:both;
+}
+
+.s4lOnOffTbl {
+	border-collapse: collapse;
+	text-align: center;
+	font-size: 12px;
+	padding: 0px;
+	cursor: pointer;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.s4lOnOffTbl td {
+	width: 35px;
+	height: 20px;	
+}
+
+.s4lOnOffOff .s4lOnOffTblOff {
+	background-color: #888;
+	color: white;
+}
+
+.s4lOnOffOn .s4lOnOffTblOff {
+	background-color: #333;
+	color: #333;
+}
+
+.s4lOnOffOn .s4lOnOffTblOn {
+	background-color: #0af;
+	color: white;
+}
+
+.s4lOnOffOff .s4lOnOffTblOn {
+	background-color: #333;
+	color: #333;
+}

@@ -1,0 +1,45 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+*/credentials.yml
+
+# dependencies
+**/node_modules
+
+**/docs
+
+# testing
+**/coverage
+
+# production
+**/build
+*.pydevproject
+.metadata
+.vscode
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*.eot
+*.svg
+*.ttf
+*~.nib
+local.properties
+/.settings
+.loadpath
+.project
+.classpath
+.tern-project
+
+**/built
+
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+yarn.lock*

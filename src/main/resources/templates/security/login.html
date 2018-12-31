@@ -1,0 +1,58 @@
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Login</title>
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+  </head>
+<link rel="stylesheet" href="/css/ppg.css" />
+<script type="text/javascript">
+function captureEnterKey(e) {
+	e=(window.event)? event:e;
+	var k=e.keyCode;
+	if(k==13) {
+		document.getElementById('l').submit();
+	}
+}
+</script>
+<body onload='document.loginForm.username.focus();'>
+	<div id="header">
+		Login
+	</div>
+
+	<div id="headline">&nbsp;</div>
+
+	<div id="page">
+
+		<div th:if="${error}" class="error" th:text="${error}"></div>
+
+		<form name='loginForm' th:action="@{/login}" method='POST'>
+
+			Username:<br/>
+			<input type="text" class="ppgsTextEdit" name="username" value="" onkeypress="captureEnterKey(event)" autocomplete="off" /><br/>
+			<br/>
+			Password:<br/>
+			<input type="password" class="ppgsTextEdit" name="password" value="" onkeypress="captureEnterKey(event)" autocomplete="off" /> <br/>
+			<br/>
+			<input type="checkbox" name="remember-me" value="true" onkeypress="captureEnterKey(event)" />RememberMe<br/><br/>
+			<button>Login</button>
+			
+			<!-- table>
+				<tr>
+					<td>User:</td>
+					<td><input type='text' name='username' value=''/></td>
+				</tr>
+				<tr>
+					<td>Password:</td>
+					<td><input type='password' name='password' /></td>
+				</tr>
+				<tr>
+					<td colspan='2'><input name="submit" type="submit"
+						value="submit" /></td>
+				</tr>
+			</table -->
+		</form>
+	</div>
+
+</body>
+</html>
