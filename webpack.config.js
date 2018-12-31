@@ -7,7 +7,7 @@ module.exports = {
 	},
   output: {
     path: __dirname,
-		path : path.resolve( __dirname, 'bin/static/built/' ),
+		path : path.resolve( __dirname, 'src/main/resources/static/built/' ),
 		filename : '[name].bundle.js'
   },
   module: {
