@@ -16,3 +16,9 @@ spring:
       
 ppgs:
   hsts: false
+  
+---
+spring:  profiles: test  datasource:
+    url: jdbc:h2:~/db/pss3
+
+server:  port: 8081
