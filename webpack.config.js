@@ -1,8 +1,14 @@
+var path = require('path');
+
 module.exports = {
-  entry: './src/main/js/index.js',
+	entry : {
+		index: './src/main/js/index/index.js',
+		config: './src/main/js/config/config.js'
+	},
   output: {
     path: __dirname,
-    filename: './src/main/resources/static/built/bundle.js'
+		path : path.resolve( __dirname, 'bin/static/built/' ),
+		filename : '[name].bundle.js'
   },
   module: {
     rules: [
