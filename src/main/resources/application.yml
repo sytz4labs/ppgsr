@@ -11,9 +11,7 @@ spring:
       settings:
         web-allow-others: true
       path: /pssdb
-  session:
-    store-type: hash-map
-      
+
 ppgs:
   hsts: false
   

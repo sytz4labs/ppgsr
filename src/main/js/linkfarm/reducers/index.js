@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import configsReducer from './configsReducer';
+import linksReducer from './linksReducer';
 import userReducer from '../../reducers/user'
 
 export default combineReducers({
-  configsReducer,
+  linksReducer,
   userReducer,
 })

@@ -4,7 +4,8 @@ module.exports = {
   watch: true,
 	entry : {
 		index: './src/main/js/index/index.js',
-		config: './src/main/js/config/config.js'
+		config: './src/main/js/config/config.js',
+		linkfarm: './src/main/js/linkfarm/linkfarm.js'
 	},
   output: {
     path: __dirname,

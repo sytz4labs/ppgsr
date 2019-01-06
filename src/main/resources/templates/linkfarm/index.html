@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>LinkFarm</title>
+    <link rel="stylesheet" href="/css/ppg.css" />
+<style>
+.edit, a {
+    cursor: pointer;
+}
+.edit {
+	opacity: 0;
+}
+
+.groupName:hover + .edit, a:hover + .edit, .edit:hover {
+	opacity: 1.0;
+}
+
+.groupName {
+	font-weight: bold;
+	padding: 5px;
+	font-size: 1.25em;
+}
+</style>
+</head>
+<body>
+    <div id="react"></div>
+    <script src="/built/linkfarm.bundle.js"></script>
+</body>
+</html>
