@@ -31,12 +31,16 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-jdbc')
 	implementation('org.springframework.boot:spring-boot-devtools')
 	implementation('org.springframework.cloud:spring-cloud-config-server')
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	implementation('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
-	implementation("org.projectlombok:lombok")
 	implementation('com.hierynomus:sshj:0.21.1')
 	implementation('com.h2database:h2')
+
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
+
+	implementation('org.projectlombok:lombok')
+	annotationProcessor('org.projectlombok:lombok')
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
 dependencyManagement {
