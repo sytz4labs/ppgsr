@@ -8,7 +8,7 @@ export class TabSet extends React.Component{
 	}
 
 	tabChildFilter(child) {
-		return React.isValidElement(child) && child.type.name == 'Tab';
+		return React.isValidElement(child);
 	}
 
 	selectTab(ord) {

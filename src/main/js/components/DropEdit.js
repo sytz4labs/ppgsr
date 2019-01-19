@@ -28,9 +28,7 @@ export default class DropEdit extends React.Component{
         const { value, options } = this.props;
         const { editMode } = this.state;
         
-        const displayf = options.filter((opt, optOrd) => opt.value == value);
-        console.log(displayf[0])
-        const display = displayf[0].text;
+        const display = options.filter((opt, optOrd) => opt.value == value)[0].text;
 
         return <span>
                 { editMode
