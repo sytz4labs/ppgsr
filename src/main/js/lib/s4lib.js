@@ -8,3 +8,7 @@ export function readCookie(name) {
     }
     return null;
 }
+
+export function formatCurrency(num) {
+	return num.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

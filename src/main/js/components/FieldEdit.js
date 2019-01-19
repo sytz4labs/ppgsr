@@ -5,7 +5,6 @@ import React from 'react';
 // value = value to display
 // updateFunc = function to call when update
 // blank = value to display if blank
-// clazz = ignore for now
 export default class FieldEdit extends React.Component{
 
     constructor(props) {

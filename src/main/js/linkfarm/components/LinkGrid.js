@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux"
 import Modal from 'react-modal';
 import { getLinks, postLinks } from "../actions/linkActions"
-import FieldEdit from "../../components/fieldEdit"
+import FieldEdit from "../../components/FieldEdit"
 
 Modal.setAppElement('#react');
 
