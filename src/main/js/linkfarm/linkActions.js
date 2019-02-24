@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setUserName } from '../../actions/userActions'
+import { setUserName } from '../actions/userActions'
 
 export function getLinks(page) {
     return (dispatch) => {

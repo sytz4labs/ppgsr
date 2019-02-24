@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="copy">
+<div style="height: 50px;">
+	<div id="headerText" style="cursor: pointer; position: absolute; top: -2px; left: 20px;" onclick="top.location='/wiki'">PP&amp;G</div>
+	<div                  style="position: absolute; top: 18px; left: 120px; font-size: 16px; line-height: 16px;"><b th:text="${affirm0}"></b><span th:text="${affirm1}"></span></div>
+<!-- 	<div id="headerLogin" style="position: absolute; top: 2px; right: 100px;"><c:if test="${li != null}" >${li.userId}</c:if></div>
+   	<div id="headerLogin" style="position: absolute; top: 0px; right: 10px;">
+   		<c:if test="${li != null}" >
+			<button onclick="document.getElementById('logoutForm').submit()">Logout</button>
+   		</c:if>
+   	</div> -->login?
+</div>
+
+<form action="${ctxp}/_logout" method="post" id="logoutForm">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
+
+<div id="headline">&nbsp;</div>
+</div>
+</body>
+</html>

@@ -1,9 +1,13 @@
 import { combineReducers } from 'redux';
 
+import budgetReducer from './budgetReducer';
 import configsReducer from './configsReducer';
-import userReducer from '../../reducers/user'
+import linksReducer from './linksReducer';
+import userReducer from './user';
 
 export default combineReducers({
+  budgetReducer,
   configsReducer,
+  linksReducer,
   userReducer,
 })

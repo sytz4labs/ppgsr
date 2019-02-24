@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux"
-import { getConfigs, saveConfig } from "../actions/configActions"
-import FieldEdit from "../../components/FieldEdit"
+import { getConfigs, saveConfig } from "./configActions"
+import FieldEdit from "../components/FieldEdit"
 
 class ConfigGrid extends React.Component{
 

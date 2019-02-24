@@ -1,9 +1,9 @@
 import React from 'react'; 
 import { render } from 'react-dom';
 import { Provider } from 'react-redux'; 
-import store from './store/store'; 
+import store from '../store/store'; 
 import AppHeader from '../components/AppHeader';
-import ConfigGrid from './components/ConfigGrid';
+import ConfigGrid from './ConfigGrid';
 
 const renderApp = () => {
   render(

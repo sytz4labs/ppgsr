@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=8" /> 
+<title>PPG Wiki</title>
+<link rel="stylesheet" href="/css/ppg.css" />
+<style>
+#buttonBlock {
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+}
+#box_2 {
+	float: none;
+	clear: both;
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	background: #f95b34;
+}
+</style>
+</head>
+<script th:inline="javascript">
+	var qs=[[${qs}]]
+</script>
+<body>
+<div>
+	<div th:insert="wiki/header :: copy"></div>
+	
+	<div th:utext="${f != null ? f : 'File ' + qs + ' does not exist'}" id="content"></div>
+
+	<div id="column3" th:if="${qs == 'index'}">
+		<a href="https://weather.com/weather/today/l/60202:4:US">Weather</a>
+	</div>
+
+	</div>
+	<div id="buttonBlock">
+	 	<button onclick="window.location='/wiki/edit?' + qs">Edit</button>
+	</div>
+</body>
+</html>

@@ -1,9 +1,9 @@
 import React from 'react'; 
 import { render } from 'react-dom';
 import { Provider } from 'react-redux'; 
-import store from './store/store'; 
+import store from '../store/store'; 
 import AppHeader from '../components/AppHeader';
-import RootRouter from './routes/RootRouter';
+import RootRouter from './RootRouter';
 
 const renderApp = () => {
   render(
