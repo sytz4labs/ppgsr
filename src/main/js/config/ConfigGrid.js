@@ -5,7 +5,7 @@ import FieldEdit from "../components/FieldEdit"
 
 class ConfigGrid extends React.Component{
 
-    componentWillMount() {
+    componentDidMount() {
 		this.props.getConfigs();
     }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setUserName } from '../actions/userActions'
+//import { setUserName } from '../actions/userActions'
 
 export function getLinks(page) {
     return (dispatch) => {
@@ -9,7 +9,7 @@ export function getLinks(page) {
 			});
 			axios.get("/lf/links?page=" + page)
 				.then(function (response) {
-					dispatch(setUserName(response.data.user))
+//					dispatch(setUserName(response.data.user))
 					dispatch({
 						type: 'FETCH_LINKS_FULFILLED',
 						payload: response.data

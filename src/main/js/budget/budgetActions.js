@@ -1,5 +1,4 @@
 import axios from "axios";
-import { setUserName } from '../actions/userActions'
 
 export function getTransactions(url) {
     return (dispatch) => {
@@ -9,7 +8,6 @@ export function getTransactions(url) {
 			});
 			axios.get("/budget/" + url)
 				.then(function (response) {
-					dispatch(setUserName(response.data.user))
 					dispatch({
 						type: 'FETCH_TRANS_FULFILLED',
 						payload: response.data

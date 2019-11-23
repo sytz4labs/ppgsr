@@ -38,7 +38,7 @@ class Budget extends React.Component{
 						{value: 'CRDT', text: 'Credit'}];
 	}
 
-    componentWillMount() {
+    componentDidMount() {
 		this.props.getTransactions('trans');
     }
 

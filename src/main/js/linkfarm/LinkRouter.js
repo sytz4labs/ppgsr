@@ -13,6 +13,6 @@ const routes = (
   </div>
 );
 
-const RootRouter = () => <Router basename="/">{routes}</Router>;
+const LinkRouter = () => <Router basename="/">{routes}</Router>;
 
-export default RootRouter;
+export default LinkRouter;

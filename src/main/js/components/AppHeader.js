@@ -1,39 +1,45 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { readCookie } from  '../lib/s4lib'
+
+import { logout, signIn } from "../login/logoutActions"
 
 class AppHeader extends React.Component{
 
-	constructor(props) {
-        super(props);
-		this.logoutForm = React.createRef();
+	signIn() {
+		window.location = 'login'
 	}
 
 	render() {
-		const { userName } = this.props.userR;
+		const { loginR, wikiR } = this.props;
 
 		return <div>
 				<div id="headerText" style={{cursor: "pointer"}} onClick={() => {top.location=this.props.home}}>{this.props.title}</div>
+				<div                 style={{position: 'absolute', top: '18px', left: '120px', fontSize: '16px', lineHeight: '16px'}}><b>{wikiR == null ? '' : wikiR.affirm0}</b><span>{wikiR == null ? '' : wikiR.affirm1}</span></div>
+
 				<div id="headline">&nbsp;</div>
-				<div id="headerLogin" style={{position: 'absolute', top: '0px', right: '10px'}}>{userName == null
-					? ''
-					: <span>{userName} <button onClick={() => {this.logoutForm.current.submit()}}>logout</button>
-						<form id='logoutForm' action='/logout' method='post' ref={this.logoutForm}>
-							<input type='hidden' name='_csrf' value={readCookie('XSRF-TOKEN')} />
-						</form>
-					</span>}</div>
+				<div id="headerLogin" style={{position: 'absolute', top: '0px', right: '10px'}}>{loginR.userInfo == null
+					? <button onClick={() => {this.props.signIn()}}>Sign In</button>
+					: <span>{loginR.userInfo.userId} <button onClick={() => this.props.logout()} >logout</button></span>}
+				</div>
 			</div>
 	}
 };
 
 const mapStateToProps = state => {
 	return {
-		userR: state.userReducer
+		loginR: state.loginReducer,
+		wikiR: state.wikiReducer
 	}
 };
 
 const mapDispatchToProps = dispatch => {
 	return {
+		logout: () => {
+            dispatch(logout());
+		},
+		signIn: () => {
+            dispatch(signIn());
+		}
 	}
 };
 

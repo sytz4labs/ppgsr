@@ -16,7 +16,6 @@ import us.ppgs.config.dao.ConfigPair;
 import us.ppgs.security.LoginInfo;
 
 @Controller
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/config")
 public class ConfigServlet {
 
@@ -25,7 +24,6 @@ public class ConfigServlet {
 		return "redirect:/config/";
 	}
 
-    @PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping("/")
 	public String indexSlash() {
 		return "config/index";

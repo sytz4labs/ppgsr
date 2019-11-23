@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,13 +14,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 //import org.springframework.security.web.csrf.CsrfTokenRepository;
 //import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import us.ppgs.security.RESTAuthenticationEntryPoint;
+import us.ppgs.security.RESTAuthenticationFailureHandler;
+import us.ppgs.security.RESTAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -32,6 +37,12 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	DataSource dataSource;
 
+    @Autowired
+    private RESTAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private RESTAuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
+    private RESTAuthenticationSuccessHandler authenticationSuccessHandler;
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -41,30 +52,51 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
 				.passwordEncoder(new BCryptPasswordEncoder());
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-        http
+//	private String[] publicUrls = new String[] { "/", "/wiki**", "/wiki/**", "/css/**", "/built/**", "/favicon.ico", "/budget**", "/budget/**", "/config**", "/config/**" };
+	
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+    	
+        http.requiresChannel()
+		        .requestMatchers(r -> r.getHeader("x-forwarded-proto") != null)
+		        .requiresSecure()
+        	.and()
         		.headers().frameOptions().sameOrigin()
         	.and()
 	        	.authorizeRequests()
-		        .antMatchers("/", "/wiki**", "/css/**")
+	        	.antMatchers("/**", "/login")
+//		        .antMatchers(publicUrls)
 		        .permitAll()
-		    .and()
-            	.authorizeRequests()
-                .anyRequest().authenticated()
+//		    .and()
+//            	.authorizeRequests()
+//                .anyRequest().authenticated()
             .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
+            	.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
             .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+                .formLogin().successHandler(authenticationSuccessHandler)
+            .and()
+            	.formLogin().failureHandler(authenticationFailureHandler)
+            .and()
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))//.logoutSuccessUrl("/login")
 			.and()
 				.rememberMe().tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(30 * 24 * 60 * 60).rememberMeCookieName("RMSESSION")
         	.and()
         		.csrf().ignoringAntMatchers("/pssdb/**").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-        
-        http.addFilterBefore(new us.ppgs.security.PazSecurityFilter(), SecurityContextPersistenceFilter.class);
     }
+
+//	private AuthenticationSuccessHandler getLoginSuccessHandler() {
+//		RedirectStrategy redirStrat = new DefaultRedirectStrategy();
+//
+//		return new AuthenticationSuccessHandler() {
+//			@Override
+//			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+//					Authentication authentication) throws IOException, ServletException {
+//				redirStrat.sendRedirect(request, response, "/famogo");
+//				
+//			}
+//		};
+//	}
 
 	@Bean
 	public PersistentTokenRepository persistentTokenRepository() {

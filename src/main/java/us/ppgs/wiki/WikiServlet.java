@@ -13,10 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import us.ppgs.config.ConfigFacility;
 import us.ppgs.io.StreamCache;
@@ -75,51 +80,67 @@ public class WikiServlet {
 		return "wiki/edit";
 	}
 
-    @RequestMapping(value="/wiki", method=RequestMethod.GET)
-	public String index(HttpServletRequest req, Model m) {
+	@GetMapping("/wiki")
+	public String indexSlash() {
+		return "wiki/index";
+	}
 
-    	return pageService("index", m);
-    }
-
-    @RequestMapping(value="/wiki/{page}", method=RequestMethod.GET)
+    @GetMapping("/wiki/{page}")
 	public String page(@PathVariable String page, Model m) {
-
-    	return pageService(page, m);
+		return "wiki/index";
     }
 
-	private String pageService(String qs, Model m) {
+    public static @Data class WikiReq {
+    	private String fileName;
+    	private String fileText;
+    }
 
-		FileInfo fi = getFile(qs);
-		m.addAttribute("f", fi == null ? null : new String(fi.contents));
+    public static @Data class WikiRes {
+    	private String fileName;
+    	private String fileText;
+    	private String user;
+    	private String affirm0;
+    	private String affirm1;
+    }
+    
+    @PostMapping("/wiki/get")
+    @ResponseBody
+	private WikiRes pageService(@RequestBody WikiReq req) {
 
-		m.addAttribute("qs", qs);
-		LoginInfo li = LoginInfo.getLoginInfo(qs.startsWith("tnt") ? LoginInfo.SESS_LEVEL_REMEMBER_ME : LoginInfo.SESS_LEVEL_NO_LOGIN);
-		m.addAttribute("li", li);
+    	WikiRes res = new WikiRes();
+    	
+		FileInfo fi = getFile(req.fileName);
+		res.setFileName(req.fileName);
+		res.setFileText(new String(fi.contents));
 
-		if ("index".equals(qs)) {
+    	LoginInfo li = LoginInfo.getLoginInfo(LoginInfo.SESS_LEVEL_NO_LOGIN);
+    	if (li != null) {
+    		res.setUser(li.getUserId());
+    	}
+
+		if ("index".equals(req.getFileName())) {
 		    int x = rand.nextInt(affirm.length);
-	
-			m.addAttribute("affirm0", affirm[x][0]);
-			m.addAttribute("affirm1", affirm[x][1]);
+			res.setAffirm0(affirm[x][0]);
+			res.setAffirm1(affirm[x][1]);
 		}
 
-		return "wiki/home";
+		return res;
 	}
     
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/wiki/save", method=RequestMethod.POST)
-	public String save(String text, String qs, Model m) throws Exception {
+    @PostMapping("/wiki/save")
+    @ResponseBody
+	public WikiRes save(@RequestBody WikiReq req) throws Exception {
 
-		// save text
-		saveFile(qs, text);
+		saveFile(req.fileName, req.fileText);
 
-		return "redirect:/wiki/" + ("index".equals(qs) ? "" : "?" + qs);
+		return pageService(req);
 	}
 	
-	private static FileInfo getFile(String qs) {
+	private static FileInfo getFile(String fileName) {
 
 		File d = new File(ConfigFacility.get("wikiDir"));
-		File f = new File(d, qs);
+		File f = new File(d, fileName);
 		StreamCache sc = new StreamCache();
 		if (f.exists()) {
 			try {
@@ -142,17 +163,17 @@ public class WikiServlet {
 		public byte[] contents;
 	}
 
-	public static void saveFile(String qs, String text) throws Exception {
+	public static void saveFile(String fileName, String fileText) throws Exception {
 		
 		File d = new File(ConfigFacility.get("wikiDir"));
-		File f = new File(d, qs);
+		File f = new File(d, fileName);
 		FileOutputStream fos = new FileOutputStream(f);
 		try {
-			fos.write(text.getBytes());
+			fos.write(fileText.getBytes());
 			fos.close();
 		}
 		catch (IOException e) {
-			log.error("saveFile " + qs, e);
+			log.error("saveFile " + fileName, e);
 		}
 		finally {
 			if (fos != null) {

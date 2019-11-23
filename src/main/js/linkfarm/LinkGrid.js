@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from "react-redux"
 import Modal from 'react-modal';
+
+import loginReducer from '../login/loginReducer'
 import { getLinks, postLinks } from "./linkActions"
 import FieldEdit from "../components/FieldEdit"
 
@@ -14,7 +16,7 @@ class LinkGrid extends React.Component{
 		this.handleInputChange = this.handleInputChange.bind(this);
 	}
 
-    componentWillMount() {
+    componentDidMount() {
 		this.pageName = this.props.match.path == "/lf/:pageName" ? this.props.match.params.pageName : '';
 		this.props.getLinks(this.pageName);
     }
@@ -35,6 +37,7 @@ class LinkGrid extends React.Component{
 		}
 
 		const { error, info, success} = this.props.linksR.links;
+		const { userInfo } = this.props.loginR;
 
 		return <div>
 			<div style={{color: 'green'}}>{success}</div>
@@ -44,32 +47,38 @@ class LinkGrid extends React.Component{
 					<div className="column" key={colOrd}>{
 						col.groups.map((grp, grpOrd) =>
 							<span key={grpOrd}>
-								<span className="groupName"><FieldEdit value={grp.name} updateFunc={(value) => {this.props.renameGroupCmd(this.pageName, colOrd, grpOrd, value)}} blank='GROUP_NAME'/></span>
-								<span className='edit'>
+								<span className="groupName">
+									{userInfo == null
+										? grp.name
+										: <FieldEdit value={grp.name} updateFunc={(value) => {this.props.renameGroupCmd(this.pageName, colOrd, grpOrd, value)}} blank='GROUP_NAME'/>
+									}
+								</span>
+								{ userInfo != null && <span className='edit'>
 									<span onClick={() => {this.props.groupCmd('moveGroupLeft', this.pageName, colOrd, grpOrd)}}> &#x25C4;</span>
 									<span onClick={() => {this.props.groupCmd('moveGroupUp', this.pageName, colOrd, grpOrd)}}> &#x25B2;</span>
 									<span onClick={() => {this.props.groupCmd('moveGroupDown', this.pageName, colOrd, grpOrd)}}> &#x25BC;</span>
 									<span onClick={() => {this.props.groupCmd('moveGroupRight', this.pageName, colOrd, grpOrd)}}> &#x25BA;</span>
 									<span onClick={() => {this.props.groupCmd('newGroupLink', this.pageName, colOrd, grpOrd)}}> &#x21b2;</span>
 									<span onClick={() => {this.props.removeGroupCmd(this.pageName, colOrd, grpOrd)}}> &#x1f5d1;</span>
-								</span>
+								</span> }
 								<br/>
 								<p>
 								{grp.links.map((link, linkOrd) =>
 									<span key={linkOrd}>
 										<a href={link.href}>{link.name}</a>
-										<span className='edit'>
+										{userInfo != null && <span className='edit'>
 											<span onClick={() => {this.setState({linkEditMode: true, page: this.pageName, colOrd: colOrd, grpOrd: grpOrd, linkOrd: linkOrd, name: link.name, url: link.href, newColGrp: colOrd + ',' + grpOrd})}}> &#x270D;</span>
 											<span onClick={() => {this.props.linkCmd('moveLinkUp', this.pageName, colOrd, grpOrd, linkOrd)}}> &#x25B2;</span>
 											<span onClick={() => {this.props.linkCmd('moveLinkDown', this.pageName, colOrd, grpOrd, linkOrd)}}> &#x25BC;</span>
-										</span>
+										</span>}
 										<br/>
 									</span>)}
 								</p>
 								<br/>
 							</span>)
-					}<FieldEdit value='' updateFunc={(value) => {this.props.newGroupCmd(this.pageName, colOrd, value)}} blank='NEW_GROUP'/>
-				</div>)}
+				}
+				{userInfo != null && <FieldEdit value='' updateFunc={(value) => {this.props.newGroupCmd(this.pageName, colOrd, value)}} blank='NEW_GROUP'/>}
+			</div>)}
 				<Modal  isOpen={this.state.linkEditMode} onRequestClose={() => this.setState({ linkEditMode: false })} >
 					Hello{this.state.linkEditMode ? <span>{'page ' + this.state.page + ' ' + this.state.colOrd + ' ' + this.state.grpOrd + ' ' + this.state.linkOrd}</span> : ''}
 					<form>
@@ -127,7 +136,8 @@ class LinkGrid extends React.Component{
 
 const mapStateToProps = state => {
 	return {
-		linksR: state.linksReducer
+		linksR: state.linksReducer,
+		loginR: state.loginReducer
 	}
 };
 

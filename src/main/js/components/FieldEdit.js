@@ -60,7 +60,7 @@ export default class FieldEdit extends React.Component{
             : <input onKeyDown={this.keyDown} onBlur={() => this.setEditMode(false)} ref={this.textInput} type='text' />;
 
         return <span onClick={() => this.setEditMode(true)}>
-                { editMode ? editValue : viewValue}
+                { editMode ? editValue : <span style={{borderBottom: '1px dashed #00d'}}>{viewValue} </span>}
 			</span>
 	}
 }

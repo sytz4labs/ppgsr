@@ -30,13 +30,11 @@ public class BudgetServlet {
 	@Autowired
 	private BudgetModel bdgtMdl;
 	
-    @PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping("")
 	public String indexb() {
 		return "redirect:/budget/";
 	}
 
-    @PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping("/")
 	public String indexSlash() {
 		return "budget/index";
@@ -51,6 +49,7 @@ public class BudgetServlet {
 		return new TransData(specs, bdgtMdl.getTrans(specs, false), new Date());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping("history")
 	@ResponseBody
 	public TransData history() {
