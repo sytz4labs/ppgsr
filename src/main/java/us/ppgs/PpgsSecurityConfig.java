@@ -3,7 +3,6 @@ package us.ppgs;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,6 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-//import org.springframework.security.web.csrf.CsrfTokenRepository;
-//import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import us.ppgs.security.RESTAuthenticationEntryPoint;
@@ -31,9 +28,6 @@ import us.ppgs.security.RESTAuthenticationSuccessHandler;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Value("${ppgs.hsts}")
-	protected String hsts;
-	
 	@Autowired
 	DataSource dataSource;
 
@@ -52,8 +46,6 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
 				.passwordEncoder(new BCryptPasswordEncoder());
 	}
 
-//	private String[] publicUrls = new String[] { "/", "/wiki**", "/wiki/**", "/css/**", "/built/**", "/favicon.ico", "/budget**", "/budget/**", "/config**", "/config/**" };
-	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
     	
@@ -65,11 +57,7 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
         	.and()
 	        	.authorizeRequests()
 	        	.antMatchers("/**", "/login")
-//		        .antMatchers(publicUrls)
 		        .permitAll()
-//		    .and()
-//            	.authorizeRequests()
-//                .anyRequest().authenticated()
             .and()
             	.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
             .and()
@@ -85,19 +73,6 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
         		.csrf().ignoringAntMatchers("/pssdb/**").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     }
 
-//	private AuthenticationSuccessHandler getLoginSuccessHandler() {
-//		RedirectStrategy redirStrat = new DefaultRedirectStrategy();
-//
-//		return new AuthenticationSuccessHandler() {
-//			@Override
-//			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-//					Authentication authentication) throws IOException, ServletException {
-//				redirStrat.sendRedirect(request, response, "/famogo");
-//				
-//			}
-//		};
-//	}
-
 	@Bean
 	public PersistentTokenRepository persistentTokenRepository() {
 		JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
@@ -111,10 +86,4 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.setTargetUrlParameter("targetUrl");
 		return auth;
 	}
-//
-//	private CsrfTokenRepository csrfTokenRepository() {
-//		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-//		repository.setHeaderName("X-XSRF-TOKEN");
-//		return repository;
-//	}
 }
