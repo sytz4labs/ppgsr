@@ -1,0 +1,32 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>CAM</title>
+    <link rel="stylesheet" href="/css/ppg.css" />
+<style>
+	#console-container {
+	    width: 400px;
+	}
+	
+	#console {
+	    border: 1px solid #CCCCCC;
+	    border-right-color: #999999;
+	    border-bottom-color: #999999;
+	    height: 50px;
+	    overflow-y: scroll;
+	    padding: 5px;
+	    width: 100%;
+	}
+	
+	#console p {
+	    padding: 0;
+	    margin: 0;
+	}
+</style>
+<script type="text/javascript" src="cam.js"></script>
+</head>
+<body>
+    <div id="react"></div>
+    <script src="/built/cam.bundle.js"></script>
+</body>
+</html>

@@ -29,6 +29,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation('org.springframework.boot:spring-boot-starter-tomcat')
 	implementation('org.springframework.boot:spring-boot-starter-jdbc')
+	implementation('org.springframework.boot:spring-boot-starter-websocket')
 	implementation('org.springframework.boot:spring-boot-devtools')
 	implementation('org.springframework.cloud:spring-cloud-config-server')
 	implementation('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml')
