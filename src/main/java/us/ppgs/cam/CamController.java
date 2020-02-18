@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,8 @@ public class CamController {
 	public String indexSlash() {
 		return "cam/index";
 	}
+
+    @PreAuthorize("hasRole('ADMIN')")
 	@RequestMapping("goSubDir")
 	@ResponseBody
 	public CamRet goSubDir(String subDir, Model m) {

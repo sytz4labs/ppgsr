@@ -23,7 +23,8 @@ public class CamWebSocket extends TextWebSocketHandler {
 		boolean[] done = new boolean[] { false };
 		session.getAttributes().put("done", done);
 		File baseDir = new File(ConfigFacility.get("camDir", "C:\\temp"));
-		File dir = new File(baseDir, session.getUri().getQuery());
+		String query = session.getUri().getQuery();
+		File dir = query == null ? baseDir : new File(baseDir, query);
 		String[] fNames = dir.list();
 		Arrays.sort(fNames);
 		
