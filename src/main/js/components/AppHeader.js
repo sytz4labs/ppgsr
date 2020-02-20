@@ -1,46 +1,40 @@
-import React from 'react';
-import { connect } from "react-redux";
+import React, { useContext, useState } from 'react';
 
-import { logout, signIn } from "../login/logoutActions"
+import { useLoginDialog } from "../login/LoginDialog"
 
-class AppHeader extends React.Component{
+/* Properties
+	 title
+	 home
+*/
 
-	signIn() {
-		window.location = 'login'
-	}
+const AppHeaderContext = React.createContext();
 
-	render() {
-		const { loginR, wikiR } = this.props;
+export default function AppHeader(props) {
+	const loginContext = useLoginDialog();
+	const [ affirm, setAffirm ] = useState(null);  // fix later
 
-		return <div>
-				<div id="headerText" style={{cursor: "pointer"}} onClick={() => {top.location=this.props.home}}>{this.props.title}</div>
-				<div                 style={{position: 'absolute', top: '18px', left: '120px', fontSize: '16px', lineHeight: '16px'}}><b>{wikiR == null ? '' : wikiR.affirm0}</b><span>{wikiR == null ? '' : wikiR.affirm1}</span></div>
-
-				<div id="headline">&nbsp;</div>
-				<div id="headerLogin" style={{position: 'absolute', top: '0px', right: '10px'}}>{loginR.userInfo == null
-					? <button onClick={() => {this.props.signIn()}}>Sign In</button>
-					: <span>{loginR.userInfo.userId} <button onClick={() => this.props.logout()} >logout</button></span>}
-				</div>
-			</div>
-	}
-};
-
-const mapStateToProps = state => {
-	return {
-		loginR: state.loginReducer,
-		wikiR: state.wikiReducer
-	}
-};
-
-const mapDispatchToProps = dispatch => {
-	return {
-		logout: () => {
-            dispatch(logout());
-		},
-		signIn: () => {
-            dispatch(signIn());
+	const appHeaderContext = {
+        setAffirm: (title, text) => {
+			setAffirm({title, text})
 		}
-	}
-};
+	};
+		
+	return <AppHeaderContext.Provider value={appHeaderContext}>
+		<div>
+			<div id="headerText" style={{cursor: "pointer"}} onClick={() => {top.location=props.home}}>{props.title}</div>
+			<div                 style={{position: 'absolute', top: '18px', left: '120px', fontSize: '16px', lineHeight: '16px'}}><b>{affirm == null ? '' : affirm.title}</b> <span>{affirm == null ? '' : affirm.text}</span></div>
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppHeader);
+			<div id="headline">&nbsp;</div>
+			<div id="headerLogin" style={{position: 'absolute', top: '0px', right: '10px'}}>{loginContext.state.userInfo == null
+				? <button onClick={() => {loginContext.signIn()}}>Sign In</button>
+				: <span>{loginContext.state.userInfo.userId} <button onClick={() => loginContext.logout()} >logout</button></span>}
+			</div>
+		</div>
+		{props.children}
+	</AppHeaderContext.Provider>
+}
+
+export const useAppHeader = () => {
+    const appHeaderContext = useContext(AppHeaderContext);
+    return { setAffirm: appHeaderContext.setAffirm };
+}

@@ -1,9 +1,13 @@
-export default function reducer(state={
-        wiki: null,
-        fetching: false,
-        fetched: false,
-        error: null,
-    }, action) {
+import { useReducer } from "react";
+
+const initialState = {
+    wiki: null,
+    fetching: false,
+    fetched: false,
+    error: null,
+}
+
+function reducer(state, action) {
 
     switch (action.type) {
         case "FETCH_WIKI_PENDING": {
@@ -23,4 +27,8 @@ export default function reducer(state={
     }
 
     return state
+}
+
+export function useWikiReducer() {
+    return useReducer(reducer, initialState);
 }

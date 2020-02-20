@@ -80,7 +80,7 @@ public class WikiServlet {
 		return "wiki/edit";
 	}
 
-	@GetMapping("/wiki")
+	@GetMapping(value="/wiki")
 	public String indexSlash() {
 		return "wiki/index";
 	}
@@ -98,7 +98,6 @@ public class WikiServlet {
     public static @Data class WikiRes {
     	private String fileName;
     	private String fileText;
-    	private String user;
     	private String affirm0;
     	private String affirm1;
     }
@@ -108,15 +107,12 @@ public class WikiServlet {
 	private WikiRes pageService(@RequestBody WikiReq req) {
 
     	WikiRes res = new WikiRes();
-    	
+
 		FileInfo fi = getFile(req.fileName);
 		res.setFileName(req.fileName);
-		res.setFileText(new String(fi.contents));
-
-    	LoginInfo li = LoginInfo.getLoginInfo(LoginInfo.SESS_LEVEL_NO_LOGIN);
-    	if (li != null) {
-    		res.setUser(li.getUserId());
-    	}
+		if (fi != null) {
+			res.setFileText(new String(fi.contents));
+		}
 
 		if ("index".equals(req.getFileName())) {
 		    int x = rand.nextInt(affirm.length);

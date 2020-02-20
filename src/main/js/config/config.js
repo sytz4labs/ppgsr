@@ -1,19 +1,15 @@
 import React from 'react'; 
 import { render } from 'react-dom';
-import { Provider } from 'react-redux'; 
 import LoginDialog from '../login/LoginDialog'
-import store from '../store/store'; 
 import AppHeader from '../components/AppHeader';
 import ConfigGrid from './ConfigGrid';
 
 const renderApp = () => {
   render(
-    <Provider store={store}>
-      <LoginDialog title='Configuration'>
+      <LoginDialog>
         <AppHeader title='Configuration' home='../wiki' />
 			  <ConfigGrid />
-      </LoginDialog>
-    </Provider>,
+      </LoginDialog>,
 	document.getElementById('react')
   );
 };

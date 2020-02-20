@@ -1,8 +1,6 @@
 import React from 'react';
-import { connect } from "react-redux"
 import Modal from 'react-modal';
 
-import loginReducer from '../login/loginReducer'
 import { getLinks, postLinks } from "./linkActions"
 import FieldEdit from "../components/FieldEdit"
 
@@ -133,7 +131,7 @@ class LinkGrid extends React.Component{
 		</div>
 	}
 };
-
+/*
 const mapStateToProps = state => {
 	return {
 		linksR: state.linksReducer,
@@ -172,4 +170,4 @@ const mapDispatchToProps = dispatch => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LinkGrid);
+export default connect(mapStateToProps, mapDispatchToProps)(LinkGrid);*/
