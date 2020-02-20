@@ -11,7 +11,6 @@ export function postWiki(dispatch, url, data, affirmFunc) {
 				type: 'FETCH_WIKI_FULFILLED',
 				payload: response.data
 			});
-			console.log('postWiki ' + response.data.affirm0)
 			affirmFunc(response.data.affirm0, response.data.affirm1)
 		})
 		.catch(function (error) {

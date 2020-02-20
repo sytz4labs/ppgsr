@@ -1,9 +1,17 @@
-export default function reducer(state={
-        links: null,
-        fetching: false,
-        fetched: false,
-        error: null,
-    }, action) {
+import { useReducer } from "react";
+
+export function useLinksReducer() {
+    return useReducer(reducer, initialState);
+}
+
+const initialState = {
+    links: null,
+    fetching: false,
+    fetched: false,
+    error: null,
+}
+
+function reducer(state, action) {
 
     switch (action.type) {
         case "FETCH_LINKS_PENDING": {

@@ -6,7 +6,7 @@ import LinkRouter from './LinkRouter';
 
 const renderApp = () => {
   render(
-      <LoginDialog title='Link Farm' loginOptional={true}>
+      <LoginDialog loginOptional={true}>
         <AppHeader title='Link Farm' home='../wiki' />
         <LinkRouter />
       </LoginDialog>,

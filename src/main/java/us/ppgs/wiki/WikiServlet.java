@@ -58,29 +58,12 @@ public class WikiServlet {
     	fmt.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/wiki/edit", method=RequestMethod.GET)
-	public String edit(HttpServletRequest req, Model m) {
-
-    	String qs = req.getQueryString();
-    	if (qs == null || qs.length() == 0) {
-    		qs = "index";
-    	}
-    	
-		LoginInfo li = LoginInfo.getLoginInfo(LoginInfo.SESS_LEVEL_REMEMBER_ME);
-		
-		m.addAttribute("li", li);
-		
-		FileInfo fi = getFile(qs);
-		m.addAttribute("f", fi == null ? null : new String(fi.contents));
-		
-		m.addAttribute("qs", qs);
-		m.addAttribute("li", li);
-		
-		return "wiki/edit";
+	@GetMapping("/wiki")
+	public String indexb() {
+		return "redirect:/wiki/";
 	}
 
-	@GetMapping(value="/wiki")
+	@GetMapping("/wiki/")
 	public String indexSlash() {
 		return "wiki/index";
 	}

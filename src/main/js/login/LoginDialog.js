@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useRef } from "react";
 
-import reducer, { initialState } from './loginReducer'
+import { reducer, initialState } from './loginReducer'
 import axios from "axios";
 import { logout, getUserInfo, signIn, submitLogin } from './loginActions'
 
@@ -8,6 +8,11 @@ const LoginDialogContext = React.createContext();
 
 // properties
 // loginOptional = boolean
+
+export const useLoginDialog = () => {
+    const loginDialogContext = useContext(LoginDialogContext);
+    return { state: loginDialogContext.state, signIn: loginDialogContext.signIn, logout: loginDialogContext.logout };
+}
 
 function showLogin(context, props) {
     if (context.state.userInfo == null) {
@@ -116,9 +121,4 @@ export default function LoginDialog(props) {
             : <div> {props.children} </div>
         }
     </LoginDialogContext.Provider>
-}
-
-export const useLoginDialog = () => {
-    const loginDialogContext = useContext(LoginDialogContext);
-    return { state: loginDialogContext.state, logout: loginDialogContext.logout, signIn: loginDialogContext.signIn };
 }

@@ -5,7 +5,7 @@ export const initialState = {
     userInfoRequested: false,
 };
 
-export default function reducer(state=initialState, action) {
+export function reducer(state, action) {
 
     switch (action.type) {
         case "USER_INFO_SUCCESSFUL": { // successful call to userInfo indicates we have a login and can get user info

@@ -1,5 +1,9 @@
 import { useReducer } from "react";
 
+export function useWikiReducer() {
+    return useReducer(reducer, initialState);
+}
+
 const initialState = {
     wiki: null,
     fetching: false,
@@ -29,6 +33,3 @@ function reducer(state, action) {
     return state
 }
 
-export function useWikiReducer() {
-    return useReducer(reducer, initialState);
-}
