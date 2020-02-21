@@ -1,39 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export class TabSet extends React.Component{
+function tabChildFilter(child) {
+	return React.isValidElement(child);
+}
 
-    constructor(props) {
-        super(props);
-		this.state = { tabSelected: 0 };
-	}
+export function TabSet(props) {
 
-	tabChildFilter(child) {
-		return React.isValidElement(child);
-	}
+	const [ tabSelected, setTabSelected ] = useState(0);
 
-	selectTab(ord) {
-		this.setState({ tabSelected: ord})
-	}
-
-	render() {
-		return <div className='s4lTabs'>
-				{this.props.children.filter(this.tabChildFilter).map((child, childOrd) =>
-					<div key={childOrd} className={'s4lTab' + (childOrd == this.state.tabSelected ? ' s4lSelected' : '')}
-						onClick={(e) => this.selectTab(childOrd)}>
-						{child.props.name}
-					</div>)}
-				<div className='s4lTabsContent'>
-					{this.props.children.filter(this.tabChildFilter).filter((child, childOrd) => childOrd == this.state.tabSelected)}
-				</div>
+	return <div className='s4lTabs'>
+			{props.children.filter(tabChildFilter).map((child, childOrd) =>
+				<div key={childOrd} className={'s4lTab' + (childOrd == tabSelected ? ' s4lSelected' : '')}
+					onClick={(e) => setTabSelected(childOrd)}>
+					{child.props.name}
+				</div>)}
+			<div className='s4lTabsContent'>
+				{props.children.filter(tabChildFilter).filter((child, childOrd) => childOrd == tabSelected)}
 			</div>
-	}
-};
+		</div>
+}
 
-export class Tab extends React.Component{
+export function Tab(props) {
 
-	render() {
-		return <div className='s4lTabs'>
-				{this.props.children}
-			</div>
-	}
-};
+	return <div className='s4lTabs'>
+			{props.children}
+		</div>
+}
