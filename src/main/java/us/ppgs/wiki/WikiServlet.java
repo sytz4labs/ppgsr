@@ -8,8 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Random;
 import java.util.TimeZone;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,15 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import us.ppgs.config.ConfigFacility;
 import us.ppgs.io.StreamCache;
-import us.ppgs.security.LoginInfo;
 
 @Controller
 @Slf4j

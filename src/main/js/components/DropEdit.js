@@ -1,43 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // properties
 // value = value to display
 // updateFunc(value) = function to call when update
 // options = value to display if blank array of value: and text:
-export default class DropEdit extends React.Component{
+export default function DropEdit(props) {
 
-    constructor(props) {
-        super(props);
-        this.state = { editMode: false };
-    }
+    const [ editMode, setEditMode ] =useState(false);
 
-    setEditMode(mode) {
-        if (mode != this.state.editMode) {
-            this.setState({ editMode: mode});
-        }
-    }
-
-    handleInputChange(event) {
+    const handleInputChange = (event) => {
 		const target = event.target;
-
-        this.props.updateFunc(target.value);
-		this.setState({ editMode: false });
+        props.updateFunc(target.value);
+		setEditMode(false);
 	}
 
-	render() {
-        const { value, options } = this.props;
-        const { editMode } = this.state;
+    const { value, options } = props;
+    
+    const display = options.filter((opt) => opt.value == value)[0].text;
+
+    return <span>
+            { editMode
+                ? <select value={props.value} style={{cursor: 'pointer'}} onChange={(e) => handleInputChange(e)} onBlur={() => setEditMode(false)}>
+                    {options.map((opt, optOrd) => 
+                        <option key={optOrd} value={opt.value}>{opt.text}</option>)}
+                </select>
+                : <span style={{cursor: 'pointer'}} onClick={() => setEditMode(true)}>{display}</span>}
+        </span>
         
-        const display = options.filter((opt, optOrd) => opt.value == value)[0].text;
-
-        return <span>
-                { editMode
-                    ? <select value={this.props.value} style={{cursor: 'pointer'}} onChange={(e) => this.handleInputChange(e)} onBlur={() => this.setEditMode(false)}>
-                        {options.map((opt, optOrd) => 
-                            <option key={optOrd} value={opt.value}>{opt.text}</option>)}
-                    </select>
-                    : <span style={{cursor: 'pointer'}} onClick={() => this.setEditMode(true)}>{display}</span>}
-            </span>
-			
-	}
 }
