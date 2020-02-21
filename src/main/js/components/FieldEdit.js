@@ -1,66 +1,55 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 // properties
 // multiLine = boolean
 // value = value to display
 // updateFunc = function to call when update
 // blank = value to display if blank
-export default class FieldEdit extends React.Component{
+// size = number of characters
+// clazz = ignore for now
 
-    constructor(props) {
-        super(props);
-        this.state = { editMode: false };
-        this.textInput = React.createRef();
-        this.keyDown = this.keyDown.bind(this);
-        this.keyDownEsc = this.keyDownEsc.bind(this);
-    }
-
-    componentDidUpdate() {
-        if (this.state.editMode) {
-            this.textInput.current.value = this.props.value;
-            this.textInput.current.focus();
+export default function FieldEdit(props) {
+    const { value = '', blank = 'BLANK', multiLine = false, size } = props;
+    const [ editMode, setEditMode ] = useState(false);
+    const textInput = useRef();
+    useEffect(() => {
+        if (editMode) {
+            textInput.current.value = value;
+            textInput.current.focus();
         }
+    });
+
+    const saveValue = () => {
+        props.updateFunc(textInput.current.value)
+        setEditMode(false);
     }
 
-    setEditMode(mode) {
-        if (mode != this.state.editMode) {
-            this.setState({ editMode: mode});
+    const keyDown = (e) => {
+        if (!multiLine && e.keyCode == 13) { // enter
+            saveValue();
         }
+        keyDownEsc(e);
     }
 
-    saveValue() {
-        this.props.updateFunc(this.textInput.current.value)
-        this.setState({ editMode: false});
-    }
-
-    keyDown(e) {
-        if (!this.props.multiLine && e.keyCode == 13) { // enter
-            this.saveValue();
-        }
-        this.keyDownEsc(e);
-    }
-
-    keyDownEsc(e) {
+    const keyDownEsc = (e) => {
         if (e.keyCode == 27) { // escape
-            this.setEditMode(false);
+            setEditMode(false);
         }
     }
 
-	render() {
-        const { value, blank, multiLine } = this.props;
-        const { editMode } = this.state;
-        
-        const viewValue = value == '' ? <span style={{color: 'gray'}}><i>{blank}</i></span> : value;
-
-        const editValue = multiLine
-            ? <span><textarea onKeyDown={this.keyDownEsc} ref={this.textInput} style={{width: '900px', height: '300px'}}></textarea>
-                <span onClick={() => this.saveValue()} style={{color: 'green', cursor: 'pointer'}}>&#x2714;</span>
-                <span onClick={() => this.setEditMode(false)} style={{color: 'red', cursor: 'pointer'}}>&#x2718;</span>
-              </span>
-            : <input onKeyDown={this.keyDown} onBlur={() => this.setEditMode(false)} ref={this.textInput} type='text' />;
-
-        return <span onClick={() => this.setEditMode(true)}>
-                { editMode ? editValue : <span style={{borderBottom: '1px dashed #00d'}}>{viewValue} </span>}
-			</span>
-	}
+    return <span>
+            { editMode
+                ? (multiLine
+                    ? <span><textarea onKeyDown={keyDownEsc} ref={textInput} style={{width: '900px', height: '300px', fontFamily: 'monospace'}}></textarea>
+                        <span onClick={() => saveValue()} style={{color: 'green', cursor: 'pointer', fontSize: '30px'}}>&#x2714;</span>
+                        <span onClick={() => setEditMode(false)} style={{color: 'red', cursor: 'pointer', fontSize: '30px'}}>&#x2718;</span>
+                    </span> 
+                    : <input onKeyDown={keyDown} onBlur={() => setEditMode(false)} ref={textInput} type='text' size={size} />)
+                : <span  onClick={() => setEditMode(true)}>
+                    {multiLine
+                        ? <pre style={{border: '1px dashed #00d'}}>{value == '' ? <span style={{color: 'gray'}}><i>{blank}</i></span> : value}</pre>
+                        : <span style={{borderBottom: '1px dashed #00d'}}>{value == '' ? <span style={{color: 'gray'}}><i>{blank}</i></span> : value} </span>
+                    }
+                    </span> }
+        </span>
 }
