@@ -1,9 +1,17 @@
-export default function reducer(state={
-        transactions: { trans: [], transSpecs: [], transHist: [] },
-        fetching: false,
-        fetched: false,
-        error: null,
-    }, action) {
+import { useReducer } from "react";
+
+export function useBudgetReducer() {
+    return useReducer(reducer, initialState);
+}
+
+const initialState = {
+    transactions: { trans: [], transSpecs: [], transHist: [] },
+    fetching: false,
+    fetched: false,
+    error: null,
+}
+
+function reducer(state, action) {
 
     switch (action.type) {
         case "FETCH_TRANS_PENDING": {

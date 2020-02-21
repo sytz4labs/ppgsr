@@ -4,7 +4,7 @@ module.exports = {
   watch: true,
 	entry : {
 		index: './src/main/js/index/index.js',
-/*		budget: './src/main/js/budget/budget.js',*/
+		budget: './src/main/js/budget/budget.js',
 		cam: './src/main/js/cam/cam.js',
 		config: './src/main/js/config/config.js',
 		linkfarm: './src/main/js/linkfarm/linkfarm.js',

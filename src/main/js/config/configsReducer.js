@@ -1,5 +1,9 @@
 import { useReducer } from "react";
 
+export function useConfigsReducer() {
+    return useReducer(reducer, initialState);
+}
+
 const initialState = {
     configs: [],
     fetching: false,
@@ -27,7 +31,4 @@ export function reducer(state, action) {
     }
 
     return state
-}
-export function useConfigsReducer() {
-    return useReducer(reducer, initialState);
 }
