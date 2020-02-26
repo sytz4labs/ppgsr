@@ -1,11 +1,17 @@
-export const initialState = {
+import { useReducer } from "react";
+
+export function useLoginReducer() {
+    return useReducer(reducer, initialState)
+}
+
+const initialState = {
     userInfo: null,
     loginFailed: 0,
     userInfoCalled: false,
     userInfoRequested: false,
 };
 
-export function reducer(state, action) {
+function reducer(state, action) {
 
     switch (action.type) {
         case "USER_INFO_SUCCESSFUL": { // successful call to userInfo indicates we have a login and can get user info
@@ -38,4 +44,3 @@ export function reducer(state, action) {
 
     return state
 }
-

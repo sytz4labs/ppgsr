@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer, useRef } from "react";
 
-import { reducer, initialState } from './loginReducer'
+import { useLoginReducer } from './loginReducer'
 import axios from "axios";
 import { logout, getUserInfo, signIn, submitLogin } from './loginActions'
 
@@ -29,8 +29,7 @@ function showLogin(context, props) {
 }
 
 export default function LoginDialog(props) {
-    const [state, dispatch] = useReducer(reducer, initialState);
-    
+    const [loginState, dispatch] = useLoginReducer();
     const usernameInput = useRef();
     const passwordInput = useRef();
 
