@@ -96,8 +96,8 @@ export default function LoginDialog(props) {
                                 <tr>
                                     <td colSpan='2'>PPGS</td>
                                 </tr>
-                                {state.loginFailed > 0 &&
-                                    <tr><td colSpan='2' style={{color: 'red'}}>Login failed {state.loginFailed}</td></tr>
+                                {loginState.loginFailed > 0 &&
+                                    <tr><td colSpan='2' style={{color: 'red'}}>Login failed {loginState.loginFailed}</td></tr>
                                 }
                                 <tr>
                                     <td>User:</td>
