@@ -61,7 +61,7 @@ export default function LoginDialog(props) {
     });
 
     const loginDialogContext = {
-        state: state,
+        state: loginState,
         signIn: () => signIn(dispatch),
         logout: () => logout(dispatch)
         };
