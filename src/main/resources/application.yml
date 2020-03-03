@@ -18,7 +18,10 @@ spring:
       settings:
         web-allow-others: true
       path: /pssdb
-
+  servlet:
+    multipart:
+      max-file-size: 3000MB
+      max-request-size: 3000MB
 ---
 spring:
   profiles: local
