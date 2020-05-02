@@ -66,7 +66,7 @@ function CamGrid() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 {data.breadCrumbs.map((crumb, i2) => <div key={i2} style={{ display: 'flex', flexDirection: 'column' }}>
-                    {crumb.dirs.map((dir, i3) => <div key={i3} style={{backgroundColor: (data.subDir.startsWith(crumb.path == '' ? dir : crumb.path + "/" + dir) ? 'yellow' : 'white')}}>
+                    {crumb.dirs.map((dir, i3) => <div key={i3} style={{backgroundColor: (data.subDir.startsWith(crumb.path == '' ? dir : crumb.path + "/" + dir) ? '#0bf6' : 'white')}}>
                         <span style={{margin: '2px', cursor: 'pointer'}} onClick={() => setPath((crumb.path == '' ? '' : crumb.path + '/') + dir)}>{dir}</span>
                         </div>)}
                 </div>)}

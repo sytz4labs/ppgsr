@@ -63,7 +63,7 @@ public class CamController {
 					d.setHasImages(true);
 				}
 			}
-			
+			d.getDirs().sort(sc);
 			cr.getBreadCrumbs().add(d);
 		}
 		
@@ -80,8 +80,6 @@ public class CamController {
 	public @Data class CamRet {
 		private List<Dir> breadCrumbs = new ArrayList<Dir>();
 		private String subDir = "";
-//		private List<String> dirs = new ArrayList<String>();
-//		private boolean hasImages = false;
 	}
 	
 	StringCompare sc = new StringCompare();
