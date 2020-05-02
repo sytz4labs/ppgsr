@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 import { useState, useEffect, useRef } from "react";
 
 import useFetch from "../lib/useFetch";
@@ -6,9 +6,9 @@ import useFetch from "../lib/useFetch";
 function CamGrid() {
     const canvas = useRef(null);
 
-    const [ path, setPath ] = useState('')
-    const [ time, setTime ] = useState('')
-    const { loading, data, error } = useFetch("goSubDir?subDir=" + path, { subDir: '', dirs: [], breadCrumbs: []});
+    const [path, setPath] = useState('')
+    const [time, setTime] = useState('')
+    const { loading, data, error } = useFetch("goSubDir?subDir=" + path, { subDir: '', breadCrumbs: [] });
 
     useEffect(() => {
         CamWs.initialize(path);
@@ -22,7 +22,7 @@ function CamGrid() {
             if (head == null) {
                 return;
             }
-                
+
             if (next == null) {
                 next = head;
             }
@@ -36,63 +36,48 @@ function CamGrid() {
                     }
                 }
             }
-        
+
             var cv = canvas.current;
             var ctx = cv.getContext('2d');
-            ctx.drawImage(next.img,0,0);
+            ctx.drawImage(next.img, 0, 0);
             setTime(next.time);
         }, 100);
 
         return () => {
             clearInterval(myInterval)
         }
-      }, [data.subDir]);
+    }, [data.subDir]);
 
     return (
-        <div>
-            <table>
-                <thead>
-                    <tr><td>
-                        <button onClick={() => {next = head;forward = true}}>Restart</button>
-                        <button onClick={() => forward = false}>Backward</button>
-                        <button onClick={() => goPrev()}>Previous</button>
-                        <button onClick={() => toggle = !toggle}>Toggle</button>
-                        <button onClick={() => goNext()}>Next</button>
-                        <button onClick={() => forward = true}>Forward</button>
-                        <button onClick={() => {next = tail;forward = false}}>Tailstart</button>
-                    </td></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td id="breadCrumbs" colSpan="2">
-                                        {data.breadCrumbs.map((crumb, i) => <span key={i}>/<span style={{padding: '4px', cursor: 'pointer'}} onClick={() => setPath(crumb.key)}>{crumb.value}</span></span>)}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="directories" style={{width: '100px', verticalAlign: 'top'}}>
-                                        {data.dirs.map((dir, i) => <span key={i}><span style={{margin: '2px', cursor: 'pointer'}} onClick={() => setPath((path == '' ? '' : path + '/') + dir)}>{dir}</span><br/></span>)}
-                                    </td>
-                                    <td><div id="myTime">{time}</div>
-                                        <canvas id="myCv" height="720" width="960" ref={canvas}></canvas>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div id="console-container">
-                                <div id="console"></div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-          </table>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+
+                <button onClick={() => { next = head; forward = true }}>Restart</button>
+                <button onClick={() => forward = false}>Backward</button>
+                <button onClick={() => goPrev()}>Previous</button>
+                <button onClick={() => toggle = !toggle}>Toggle</button>
+                <button onClick={() => goNext()}>Next</button>
+                <button onClick={() => forward = true}>Forward</button>
+                <button onClick={() => { next = tail; forward = false }}>Tailstart</button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                {data.breadCrumbs.map((crumb, i1) => <span key={i1}>/<span style={{ padding: '4px', cursor: 'pointer' }} onClick={() => setPath(crumb.path)}>{crumb.name}</span></span>)}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                {data.breadCrumbs.map((crumb, i2) => <div key={i2} style={{ display: 'flex', flexDirection: 'column' }}>
+                    {crumb.dirs.map((dir, i3) => <div key={i3} style={{backgroundColor: (data.subDir.startsWith(crumb.path == '' ? dir : crumb.path + "/" + dir) ? 'yellow' : 'white')}}>
+                        <span style={{margin: '2px', cursor: 'pointer'}} onClick={() => setPath((crumb.path == '' ? '' : crumb.path + '/') + dir)}>{dir}</span>
+                        </div>)}
+                </div>)}
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div id="myTime">{time}</div>
+                        <canvas id="myCv" height="720" width="960" ref={canvas}></canvas>
+                </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row' }} id="console-container">
+                    <div id="console"></div>
+                </div>
         </div>
     );
 }
