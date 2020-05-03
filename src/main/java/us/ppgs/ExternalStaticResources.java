@@ -12,7 +12,7 @@ public class ExternalStaticResources {
     public WebMvcConfigurer webMvcConfigurerAdapter() {
     	
     	boolean isWin = System.getProperty("os.name").toLowerCase().indexOf("win") >= 0;
-        String filePath = isWin ? "/my/" : "~/www";
+        String filePath = isWin ? "/my/" : "~/www/";
         String pathPatterns = "/pub/**";
 
         return new WebMvcConfigurer() {

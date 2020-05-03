@@ -5,12 +5,12 @@ class HelloMessage extends React.Component {
 	render() {
 	  return (
 			<div>
-				Hello a i {this.props.name}
+				Nothing happens here
 			</div>
 	  );
 	}
   }
   
 ReactDOM.render(
-	<HelloMessage name="Index" />, document.getElementById('react')
+	<HelloMessage />, document.getElementById('react')
 );
