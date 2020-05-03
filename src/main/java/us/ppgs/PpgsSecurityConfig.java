@@ -65,7 +65,7 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             	.formLogin().failureHandler(authenticationFailureHandler)
             .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))//.logoutSuccessUrl("/login")
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))
 			.and()
 				.rememberMe().tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(30 * 24 * 60 * 60).rememberMeCookieName("RMSESSION")
