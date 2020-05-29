@@ -8,6 +8,7 @@ module.exports = {
 		fu: './src/main/js/fu/fu.js',
 		config: './src/main/js/config/config.js',
 		linkfarm: './src/main/js/linkfarm/linkfarm.js',
+		ewiki: './src/main/js/ewiki/wiki.js',
 		wiki: './src/main/js/wiki/wiki.js'
 	},
   output: {
