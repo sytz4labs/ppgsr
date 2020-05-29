@@ -21,16 +21,19 @@ public class WikiServletDB {
 		return "redirect:/ewiki/";
 	}
 
+    @PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/ewiki/")
 	public String indexSlash() {
 		return "ewiki/index";
 	}
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/ewiki/{page}")
 	public String page(@PathVariable String page, Model m) {
 		return "ewiki/index";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/ewiki/get")
     @ResponseBody
     public WikiReq pageService(@RequestBody WikiReq req) {
