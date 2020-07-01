@@ -26,7 +26,7 @@ spring:
 spring:
   profiles: local
   datasource:
-    url: jdbc:h2:c:/my/db/pss3
+    url: jdbc:h2:c:/my/db/pss4
 server:
   servlet:
     session:

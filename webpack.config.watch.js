@@ -6,10 +6,11 @@ module.exports = {
 		index: './src/main/js/index/index.js',
 		budget: './src/main/js/budget/budget.js',
 		cam: './src/main/js/cam/cam.js',
-		fu: './src/main/js/fu/fu.js',
 		config: './src/main/js/config/config.js',
-		linkfarm: './src/main/js/linkfarm/linkfarm.js',
 		ewiki: './src/main/js/ewiki/wiki.js',
+		fu: './src/main/js/fu/fu.js',
+		linkfarm: './src/main/js/linkfarm/linkfarm.js',
+		tasks: './src/main/js/tasks/tasks.js',
 		wiki: './src/main/js/wiki/wiki.js'
 	},
   output: {
