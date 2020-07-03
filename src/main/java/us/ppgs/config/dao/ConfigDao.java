@@ -5,24 +5,42 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ConfigDao {
-
-	private JdbcTemplate jt;
+public class ConfigDao implements ApplicationListener<ApplicationReadyEvent> {
 
 	@Autowired
-	public ConfigDao(DataSource ds) {
-		jt = new JdbcTemplate(ds);
+	private JdbcTemplate jt;
+
+	@Override
+	public void onApplicationEvent(ApplicationReadyEvent event) {
+		jt.execute("create table if not exists config_version"
+				+ " (release int not null)"
+				+ " AS select 0");
+		
+		int release = jt.queryForObject("select release from config_version", Integer.class).intValue();
+		
+		if (release == 0) {
+			jt.execute("create table if not exists config ("
+					+ "id int auto_increment,"
+					+ "name varchar(255) not null,"
+					+ "multi_line boolean,"
+					+ "length int,"
+					+ "value text,"
+					+ "PRIMARY KEY (id))");
+
+			release = 1;
+			jt.update("update config_version set release = ?", new Object[] {release});
+		}
 	}
-	
+
 	public Map<String, ConfigPair> getCache() {
 		final Map<String, ConfigPair> cache = new TreeMap<String, ConfigPair>();
 

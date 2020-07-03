@@ -47,8 +47,8 @@ export default function FieldEdit(props) {
                     : <input onKeyDown={keyDown} onBlur={() => setEditMode(false)} ref={textInput} type='text' size={size} />)
                 : <span  onClick={() => setEditMode(true)}>
                     {multiLine
-                        ? <pre style={{border: '1px dashed #00d'}}>{value == '' ? <span style={{color: 'gray'}}><i>{blank}</i></span> : value}</pre>
-                        : <span style={{borderBottom: '1px dashed #00d'}}>{value == '' ? <span style={{color: 'gray'}}><i>{blank}</i></span> : value} </span>
+                        ? <pre style={{border: '1px dashed #00d'}}>{value == '' ? <span style={{color: '#ddd'}}><i>{blank}</i></span> : value}</pre>
+                        : <span style={{borderBottom: '1px dashed #00d'}}>{value == '' ? <span style={{color: '#ddd'}}><i>{blank}</i></span> : value} </span>
                     }
                     </span> }
         </span>

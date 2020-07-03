@@ -7,7 +7,7 @@ export default function TasksView() {
     const [ req, setReq ] = useState({cmd: 'get'})
     const taskStatus = useFetchPost('/tasks/get', req, []);
 
-    return <div>
+    return <div id="content" style={{backgroundColor: 'white'}}>
         { taskStatus.loading
             ? 'Loading. . .'
             : <table style={{borderCollapse: 'collapse'}}>
@@ -22,8 +22,8 @@ export default function TasksView() {
                 <tbody>
                     {taskStatus.data.map((task) => 
                         <tr key={task.id} className={'bordered'}>
-                            <td><FieldEdit value={task.area} updateFunc={(value) => {setReq({cmd: 'area', id: task.id, val: value})}} blank='BLANK'/></td>
-                            <td><FieldEdit value={task.priority.toString()} updateFunc={(value) => {setReq({cmd: 'priority', id: task.id, val: value})}} blank='BLANK'/></td>
+                            <td style={{textAlign: 'center'}}><FieldEdit value={task.area} updateFunc={(value) => {setReq({cmd: 'area', id: task.id, val: value})}} blank='BLANK'/></td>
+                            <td style={{textAlign: 'center'}}><FieldEdit value={task.priority.toString()} updateFunc={(value) => {setReq({cmd: 'priority', id: task.id, val: value})}} blank='BLANK' size='5'/></td>
                             <td><FieldEdit value={task.task} updateFunc={(value) => {setReq({cmd: 'task', id: task.id, val: value})}} blank='BLANK'/></td>
                             <td><FieldEdit value={task.benefit} updateFunc={(value) => {setReq({cmd: 'benefit', id: task.id, val: value})}} blank='BLANK'/></td>
                         </tr>)}
