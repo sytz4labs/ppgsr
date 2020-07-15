@@ -7,7 +7,7 @@ import { useWikiReducer } from './wikiReducer';
 import { useAppHeader } from '../components/AppHeader'
 
 export default function WikiPage(props) {
-	var pageName = props.match.path == "/wiki/:pageName" ? props.match.params.pageName : 'index';
+	var pageName = props.match.path == "/ewiki/:pageName" ? props.match.params.pageName : 'index';
 
 	const [ editMode, setEditMode] = useState(false)
 	const textInput = useRef();
@@ -35,7 +35,7 @@ export default function WikiPage(props) {
 	};
 
 	return <div>
-		{ !editMode && <div className="content" dangerouslySetInnerHTML={{__html: wikiState.wiki == null ? '' : wikiState.wiki.fileText == null ? 'File ' + wikiState.wiki.fileName + ' does not exist' : wikiState.wiki.fileText }}>
+		{ !editMode && <div id="content" dangerouslySetInnerHTML={{__html: wikiState.wiki == null ? '' : wikiState.wiki.fileText == null ? 'File ' + wikiState.wiki.fileName + ' does not exist' : wikiState.wiki.fileText }}>
 			</div>
 		}
 		{ !editMode && loginDialog.state.userInfo != null && <div id="buttonBlock">

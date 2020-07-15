@@ -35,7 +35,7 @@ export default function WikiPage(props) {
 	};
 
 	return <div>
-		{ !editMode && <div className="content" dangerouslySetInnerHTML={{__html: wikiState.wiki == null ? '' : wikiState.wiki.fileText == null ? 'File ' + wikiState.wiki.fileName + ' does not exist' : wikiState.wiki.fileText }}>
+		{ !editMode && <div id="content" dangerouslySetInnerHTML={{__html: wikiState.wiki == null ? '' : wikiState.wiki.fileText == null ? 'File ' + wikiState.wiki.fileName + ' does not exist' : wikiState.wiki.fileText }}>
 			</div>
 		}
 		{ !editMode && loginDialog.state.userInfo != null && <div id="buttonBlock">
