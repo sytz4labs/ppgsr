@@ -137,6 +137,10 @@ export default function BudgetView(props) {
 										<td style={{textAlign: 'right'}}><FieldEdit value={formatCurrency(tran.value)} blank='BLANK' updateFunc={(value) => budgetHandler('ts.value|'+tran.id, value)}/></td>
 									</tr>)
 							}
+							<tr>
+								<td><FieldEdit value='' blank='NEW' updateFunc={(value) => budgetHandler('addTranSpec', value)}/></td>
+								<td colSpan='5'></td>
+							</tr>
 						</tbody>
 					</table>
 				</Tab>
