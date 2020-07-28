@@ -20,6 +20,12 @@ export default function TasksView() {
                     </tr>
                 </thead>
                 <tbody>
+                    <tr className={'bordered'}>
+                        <td></td>
+                        <td></td>
+                        <td><FieldEdit value='' updateFunc={(value) => {setReq({cmd: 'new', val: value})}} blank='NEW_TASK'/></td>
+                        <td></td>
+                    </tr>
                     {taskStatus.data.map((task) => 
                         <tr key={task.id} className={'bordered'}>
                             <td style={{textAlign: 'center'}}><FieldEdit value={task.area} updateFunc={(value) => {setReq({cmd: 'area', id: task.id, val: value})}} blank='BLANK'/></td>
@@ -27,12 +33,6 @@ export default function TasksView() {
                             <td><FieldEdit value={task.task} updateFunc={(value) => {setReq({cmd: 'task', id: task.id, val: value})}} blank='BLANK'/></td>
                             <td><FieldEdit value={task.benefit} updateFunc={(value) => {setReq({cmd: 'benefit', id: task.id, val: value})}} blank='BLANK'/></td>
                         </tr>)}
-                    <tr className={'bordered'}>
-                        <td></td>
-                        <td></td>
-                        <td><FieldEdit value='' updateFunc={(value) => {setReq({cmd: 'new', val: value})}} blank='NEW_TASK'/></td>
-                        <td></td>
-                    </tr>
                 </tbody>
             </table>
             }

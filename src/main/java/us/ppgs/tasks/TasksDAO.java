@@ -43,7 +43,7 @@ public class TasksDAO implements ApplicationListener<ApplicationReadyEvent> {
 	}
 
 	public void newTask(String task) {
-		jt.update("insert into tasks (area, priority, task, benefit, notes) values('default', 0, ?, '', '')",
+		jt.update("insert into tasks (area, priority, task, benefit, notes) values('', 1000, ?, '', '')",
 				new Object[] { task});
 	}	
 
@@ -70,8 +70,12 @@ public class TasksDAO implements ApplicationListener<ApplicationReadyEvent> {
 		return r;
 	}
 
-	public void rename(int id, String cmd, String val) {
-		jt.update("update tasks set " + cmd + "=? where id=? ",
-				new Object[] { val, id });
+	public void updateTask(int id, String cmd, String val) {
+		if (val.length() == 0 && cmd.equals("task")) {
+			jt.update("delete tasks where id=? ", new Object[] { id });
+		}
+		else {
+			jt.update("update tasks set " + cmd + "=? where id=? ", new Object[] { val, id });
+		}
 	}
 }

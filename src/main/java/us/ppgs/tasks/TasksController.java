@@ -46,7 +46,7 @@ public class TasksController {
 		case "priority":
 		case "task":
 		case "benefit":
-			tDao.rename(req.getId(), req.getCmd(), req.getVal());
+			tDao.updateTask(req.getId(), req.getCmd(), req.getVal());
 			break;
 		}
 		
