@@ -28,11 +28,11 @@ public class ConfigFacility {
 	
 	public static Integer getInteger(String name) {
 		String s = get(name);
-		return s == null ? null : new Integer(s);
+		return s == null ? null : Integer.valueOf(s);
 	}
 	
 	public static Integer getInteger(String name, int dflt) {
-		return new Integer(get(name, Integer.toString(dflt)));
+		return Integer.valueOf(get(name, Integer.toString(dflt)));
 	}
 	
 	public static int getInt(String name) {
