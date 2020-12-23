@@ -19,7 +19,7 @@ export default function TasksView() {
                                     <th style={{width: '100px'}}>Area</th>
                                     <th style={{width: ' 75px'}}>Priority</th>
                                     <th style={{width: '250px'}}>Task</th>
-                                    <th style={{width: '250px'}}>Benefit</th>
+                                    <th style={{width: '250px'}}>Notes</th>
                                 </tr>
                             </thead>
                             <tbody>
