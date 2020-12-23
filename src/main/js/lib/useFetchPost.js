@@ -16,7 +16,6 @@ const useFetchPost = (url, req, initialValue) => {
                 setError(error.message);
                 setLoading(false);
             });
-        return () => {console.log('fetchPost unload')}
     }, [url, req]);
     return { loading, data, error };
 };
