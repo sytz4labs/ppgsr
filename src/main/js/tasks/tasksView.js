@@ -6,10 +6,10 @@ export default function TasksView() {
 
     const [ req, setReq ] = useState({cmd: 'get'})
     const [ showCompleted, setShowCompleted ] = useState(false)
-    const taskStatus = useFetchPost('/tasks/get', req, []);
+    const taskStatus = useFetchPost('/tasks/get', req, null);
 
     return <div id="content" style={{backgroundColor: 'white'}}>
-                    { taskStatus.loading
+                    { taskStatus.data == null
                         ? 'Loading. . .'
                         : <>
                             <input type='checkbox' onChange={e => setShowCompleted(!showCompleted)} checked={showCompleted} />Show Completed
