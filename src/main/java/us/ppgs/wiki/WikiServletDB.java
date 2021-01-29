@@ -1,5 +1,7 @@
 package us.ppgs.wiki;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,28 +38,17 @@ public class WikiServletDB {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/ewiki/get")
     @ResponseBody
-    public WikiReq pageService(@RequestBody WikiReq req) {
+    public FileInfo pageService(@RequestBody FileInfo req) {
 
-    	WikiReq res = new WikiReq();
-
-		FileInfo fi = wikiDao.getFile(req.getFileName());
-		res.setFileName(req.getFileName());
-		if (fi == null) {
-			res.setFileText("Newish");
-		}
-		else {
-			res.setFileText(new String(fi.contents));
-		}
-
-		return res;
+		return wikiDao.getFile(req.getFile()).get(0);
 	}
     
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/ewiki/save")
     @ResponseBody
-	public WikiReq save(@RequestBody WikiReq req) throws Exception {
+	public FileInfo save(@RequestBody FileInfo req) throws Exception {
 
-		wikiDao.saveFile(req.getFileName(), req.getFileText());
+		wikiDao.saveFile(req.getFile(), req.getPage(), req.getContents());
 
 		return pageService(req);
 	}
