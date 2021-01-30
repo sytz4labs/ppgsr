@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useLoginDialog } from '../login/LoginDialog'
 
@@ -7,7 +7,8 @@ import { useWikiReducer } from './wikiReducer';
 import { useAppHeader } from '../components/AppHeader'
 
 export default function WikiPage(props) {
-	var pageName = props.match.path == "/ewiki/:pageName" ? props.match.params.pageName : 'index';
+	console.log(props.match.path)
+	var file = props.match.path == "/ewiki/:file" ? props.match.params.file : 'index';
 
 	const [ editMode, setEditMode] = useState(false)
 	const textInput = useRef();
@@ -15,27 +16,27 @@ export default function WikiPage(props) {
 
 	const loginDialog = useLoginDialog();
 	useEffect(() => {
-		getPage(pageName);
+		getPage(file);
 	}, [])
 	useEffect(() => {
-		if (wikiState.wiki != null && wikiState.wiki.fileText != null && textInput.current != null) {
-			textInput.current.value = wikiState.wiki.fileText;
+		if (wikiState.wiki != null && wikiState.wiki.contents != null && textInput.current != null) {
+			textInput.current.value = wikiState.wiki.contents;
 			textInput.current.focus();
 		}
 	})
 
 	const { setAffirm } = useAppHeader();
 
-	const getPage = (fileName) => {
-		postWiki(dispatch, 'get', {fileName}, setAffirm);
+	const getPage = (file) => {
+		postWiki(dispatch, 'get', {file}, setAffirm);
 	};
 
-	const savePage = (fileName, fileText) => {
-		postWiki(dispatch, 'save', {fileName, fileText}, setAffirm);
+	const savePage = (file, page, contents) => {
+		postWiki(dispatch, 'save', {file, page, contents}, setAffirm);
 	};
 
 	return <div>
-		{ !editMode && <div id="content" dangerouslySetInnerHTML={{__html: wikiState.wiki == null ? '' : wikiState.wiki.fileText == null ? 'File ' + wikiState.wiki.fileName + ' does not exist' : wikiState.wiki.fileText }}>
+		{ !editMode && <div id="content" dangerouslySetInnerHTML={{__html: wikiState.wiki == null ? '' : wikiState.wiki.contents == null ? 'File ' + wikiState.wiki.file + ' does not exist' : wikiState.wiki.contents }}>
 			</div>
 		}
 		{ !editMode && loginDialog.state.userInfo != null && <div id="buttonBlock">
@@ -46,7 +47,7 @@ export default function WikiPage(props) {
 			<textarea id="fText" name="text" rows='30' cols='130' ref={textInput}></textarea><br/>
 			<table>
 				<tbody>
-					<tr><td><button onClick={() => {setEditMode(false);savePage(wikiState.wiki.fileName, textInput.current.value)}}>Save</button></td>
+					<tr><td><button onClick={() => {setEditMode(false);savePage(wikiState.wiki.file, wikiState.wiki.page, textInput.current.value)}}>Save</button></td>
 						<td><button onClick={() => setEditMode(false)}>Cancel</button></td></tr>
 				</tbody>
 			</table>
