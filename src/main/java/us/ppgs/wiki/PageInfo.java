@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public @Data class FileInfo {
+public @Data class PageInfo {
 	public int id;
-	public String file;
 	public String page;
+	public String tab;
 	public long modified;
 	public String contents;
 }
