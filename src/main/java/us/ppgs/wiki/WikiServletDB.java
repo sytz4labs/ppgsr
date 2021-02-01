@@ -38,17 +38,32 @@ public class WikiServletDB {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/ewiki/get")
     @ResponseBody
-    public FileInfo pageService(@RequestBody FileInfo req) {
+    public List<PageInfo> pageService(@RequestBody PageInfo req) {
+    	
+    	var pages = wikiDao.getPage(req.getPage());
+    	if (pages.size() == 0) {
+    		pages.add(new PageInfo(-1, req.getPage(), "", 0, "Undefined"));
+    	}
 
-		return wikiDao.getFile(req.getFile()).get(0);
+		return pages; 
 	}
     
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/ewiki/save")
+    @PostMapping("/ewiki/savePage")
     @ResponseBody
-	public FileInfo save(@RequestBody FileInfo req) throws Exception {
+	public List<PageInfo> savePage(@RequestBody PageInfo req) throws Exception {
 
-		wikiDao.saveFile(req.getFile(), req.getPage(), req.getContents());
+		wikiDao.savePageContents(req);
+
+		return pageService(req);
+	}
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/ewiki/savePageTab")
+    @ResponseBody
+	public List<PageInfo> savePageTab(@RequestBody PageInfo req) throws Exception {
+
+		wikiDao.savePageTab(req);
 
 		return pageService(req);
 	}

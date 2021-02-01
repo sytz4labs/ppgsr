@@ -5,53 +5,107 @@ import { useLoginDialog } from '../login/LoginDialog'
 import { postWiki } from './wikiActions';
 import { useWikiReducer } from './wikiReducer';
 import { useAppHeader } from '../components/AppHeader'
+import FieldEdit from "../components/FieldEdit";
+import { Tab, TabSet } from "../components/TabSet";
 
 export default function WikiPage(props) {
-	console.log(props.match.path)
-	var file = props.match.path == "/ewiki/:file" ? props.match.params.file : 'index';
+	var page = props.match.path == "/ewiki/:page" ? props.match.params.page : 'index';
 
-	const [ editMode, setEditMode] = useState(false)
-	const textInput = useRef();
+	const [ editTabMode, setEditTabMode] = useState(false);
 	const [ wikiState, dispatch ] = useWikiReducer();
 
 	const loginDialog = useLoginDialog();
 	useEffect(() => {
-		getPage(file);
+		getPage(page);
 	}, [])
+
+	const { setAffirm } = useAppHeader();
+
+	const getPage = (page) => {
+		postWiki(dispatch, 'get', {page}, setAffirm);
+	};
+
+	const savePageContents = (id, page, tab, contents) => {
+		postWiki(dispatch, 'savePage', {id, page, tab, contents}, setAffirm);
+	};
+
+	const savePageTab = (id, page, tab) => {
+		postWiki(dispatch, 'savePageTab', {id, page, tab}, setAffirm);
+	};
+
+	return <>
+		{
+			editTabMode
+				? <div>
+					Edit tab mode
+					{wikiState.wiki.map((f, i) => <div key={i}>
+						<FieldEdit value={f.tab} updateFunc={(value) => {savePageTab(f.id, f.page, value)}} blank='TAB_NAME'/>
+					</div>)}
+					<FieldEdit value='' updateFunc={(value) => {savePageTab(-1, page, value)}} blank='NEW_TAB'/>
+					<div id="buttonBlock">
+						<button onClick={() => setEditTabMode(false)}>Cancel</button>
+					</div>
+				</div>
+				: <div>
+					{ wikiState.wiki == null
+						? 'Loading . . .'
+						: wikiState.wiki.length == 1
+							? <div className='s4lTabsContent'>
+								<WikiTab tab={wikiState.wiki[0]}
+									editAllowed={loginDialog.state.userInfo != null}
+									setEditTabModeFunc={setEditTabMode}
+									savePageContentsFunc={savePageContents} />
+								</div>
+							: <TabSet>
+								{wikiState.wiki.map((t, i) => <Tab key={i} name={t.tab}>
+									<WikiTab tab={t}
+										editAllowed={loginDialog.state.userInfo != null}
+										setEditTabModeFunc={setEditTabMode}
+										savePageContentsFunc={savePageContents} />
+									</Tab>)}
+							</TabSet>
+					}
+				</div>
+		}
+	</>
+}
+
+/* props
+	tab
+	editAllowed
+	setEditTabModeFunc
+	savePageContentsFunc
+*/
+function WikiTab(props) {
+
+	const { id, page, tab, contents } = props.tab
+
+	const textInput = useRef();
+
+	const [ editMode, setEditMode] = useState(false);
 	useEffect(() => {
-		if (wikiState.wiki != null && wikiState.wiki.contents != null && textInput.current != null) {
-			textInput.current.value = wikiState.wiki.contents;
+		if (textInput.current != null) {
+			textInput.current.value = contents;
 			textInput.current.focus();
 		}
 	})
 
-	const { setAffirm } = useAppHeader();
-
-	const getPage = (file) => {
-		postWiki(dispatch, 'get', {file}, setAffirm);
-	};
-
-	const savePage = (file, page, contents) => {
-		postWiki(dispatch, 'save', {file, page, contents}, setAffirm);
-	};
-
-	return <div>
-		{ !editMode && <div id="content" dangerouslySetInnerHTML={{__html: wikiState.wiki == null ? '' : wikiState.wiki.contents == null ? 'File ' + wikiState.wiki.file + ' does not exist' : wikiState.wiki.contents }}>
-			</div>
-		}
-		{ !editMode && loginDialog.state.userInfo != null && <div id="buttonBlock">
-			<button onClick={() => setEditMode(true)}>Edit</button>
-			</div>
-		}
-		{ editMode && <div className="content">
-			<textarea id="fText" name="text" rows='30' cols='130' ref={textInput}></textarea><br/>
-			<table>
-				<tbody>
-					<tr><td><button onClick={() => {setEditMode(false);savePage(wikiState.wiki.file, wikiState.wiki.page, textInput.current.value)}}>Save</button></td>
-						<td><button onClick={() => setEditMode(false)}>Cancel</button></td></tr>
-				</tbody>
-			</table>
-			</div>
-		}
-	</div>
+	return <>
+			{!editMode && <div dangerouslySetInnerHTML={{__html: contents}}></div>}
+			{ !editMode && props.editAllowed && <div id="buttonBlock">
+				<button onClick={() => props.setEditTabModeFunc(true)}>Edit tabs</button>
+				<button onClick={() => setEditMode(true)}>Edit</button>
+				</div>
+			}
+			{ editMode && <div className="content">
+				<textarea id="fText" name="text" rows='30' cols='130' ref={textInput}></textarea><br/>
+				<table>
+					<tbody>
+						<tr><td><button onClick={() => {setEditMode(false);props.savePageContentsFunc(id, page, tab, textInput.current.value)}}>Save</button></td>
+							<td><button onClick={() => setEditMode(false)}>Cancel</button></td></tr>
+					</tbody>
+				</table>
+				</div>
+			}
+		</>
 }

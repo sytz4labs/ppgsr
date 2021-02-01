@@ -43,14 +43,16 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 		if (release == 1) {
 			jdbcTemplate.execute("alter table ewiki rename to ewiki_old");
 
-			jdbcTemplate.execute("create table ewiki (" + 
-					"    file varchar(255) not null," +
+			jdbcTemplate.execute("create table ewiki (" +
+					"    id int auto_increment," + 
 					"    page varchar(255) not null," +
+					"    tab varchar(255) not null," +
 					"    modified long not null," +
 					"    contents clob not null," +
-					"    PRIMARY KEY (file, page))");
+					"    unique (page, tab)," +
+					"    primary key (id))");
 
-			jdbcTemplate.execute("insert into ewiki select key, '', modified, value from ewiki_old");
+			jdbcTemplate.execute("insert into ewiki (page, tab, modified, contents) select key, '', modified, value from ewiki_old");
 
 			release = 2;
 			jdbcTemplate.update("update ewiki_version set release = ?", new Object[] {release});
@@ -59,30 +61,70 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 
 	private BytesEncryptor bEncrypt = Encryptors.stronger("HIy5vWBCYugjwRHmDLzf27Ti00Ak6EkSoAjmvQIgADzpq85Fr5bu8zqxCROE7bl", "29E510B3D6677AF0C29FA31B0C88C57F188669C606DBF7245A755AC9A994BCDB");
 
-	private class EwikiExtractor implements RowMapper<FileInfo> {
+	private class EwikiExtractor implements RowMapper<PageInfo> {
 		@Override
-		public FileInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new FileInfo(rs.getString("file"),
+		public PageInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+			return new PageInfo(rs.getInt("id"),
 					rs.getString("page"),
+					rs.getString("tab"),
 					rs.getLong("modified"),
 					new String(bEncrypt.decrypt(Base64.getDecoder().decode(rs.getString("contents")))));
 		}
 	}
 	
-	public List<FileInfo> getFile(String name) {
+	public List<PageInfo> getPage(String page) {
 
-		return jdbcTemplate.query("select * from ewiki where file = ?",
+		return jdbcTemplate.query("select * from ewiki where page = ? order by id",
 				new EwikiExtractor(),
-				name);
+				page);
 	}
 	
-	public void saveFile(String file, String page, String contents) {
+	public void savePage(String page, String tab, String contents) {
 		
-		jdbcTemplate.update("merge into ewiki (file,page,modified,contents)" +
+		jdbcTemplate.update("merge into ewiki (page,tab,modified,contents)" +
 				"values (?,?,?,?)",
-				file,
 				page,
+				tab,
 				System.currentTimeMillis(),
 				Base64.getEncoder().encodeToString(bEncrypt.encrypt(contents.getBytes())));
+	}
+
+	public void savePageContents(PageInfo req) {
+		if (req.getId() < 0) {
+			jdbcTemplate.update("insert into ewiki (page,tab,modified,contents)" +
+					"values (?,?,?,?)",
+					req.getPage(),
+					req.getTab(),
+					System.currentTimeMillis(),
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt(req.getContents().getBytes())));
+		}
+		else {
+			jdbcTemplate.update("update ewiki set modified=?, contents=? where id=?",
+					System.currentTimeMillis(),
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt(req.getContents().getBytes())),
+					req.getId());
+		}
+	}
+
+	public void savePageTab(PageInfo req) {
+		if (req.getId() < 0) {
+			jdbcTemplate.update("insert into ewiki (page,tab,modified,contents)" +
+					"values (?,?,?,?)",
+					req.getPage(),
+					req.getTab(),
+					System.currentTimeMillis(),
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt("".getBytes())));
+		}
+		else {
+			if (req.getTab().trim().length() == 0) {
+				jdbcTemplate.update("delete ewiki where id=?",
+						req.getId());
+			}
+			else {
+				jdbcTemplate.update("update ewiki set tab=? where id=?",
+						req.getTab(),
+						req.getId());
+			}
+		}
 	}
 }

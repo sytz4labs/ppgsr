@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
 import WikiPage from './WikiPage';
 
-export default function WikiRouter(props) {
+export default function WikiRouter() {
     return <Router basename="/">
                 <AppHeader title='PP&G' home='../wiki'>
                     <Switch>
                         <Route path="/ewiki/" exact component={WikiPage} />
-                        <Route path="/ewiki/:file" component={WikiPage} />
+                        <Route path="/ewiki/:page" component={WikiPage} />
                         <Route render={() => (<h1>Error</h1>)} />
                     </Switch>
                 </AppHeader>
