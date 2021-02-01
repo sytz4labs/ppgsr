@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public @Data class FileInfo {
+	public int id;
 	public String file;
 	public String page;
 	public long modified;

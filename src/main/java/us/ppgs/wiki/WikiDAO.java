@@ -43,14 +43,16 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 		if (release == 1) {
 			jdbcTemplate.execute("alter table ewiki rename to ewiki_old");
 
-			jdbcTemplate.execute("create table ewiki (" + 
+			jdbcTemplate.execute("create table ewiki (" +
+					"    id int auto_increment," + 
 					"    file varchar(255) not null," +
 					"    page varchar(255) not null," +
 					"    modified long not null," +
 					"    contents clob not null," +
-					"    PRIMARY KEY (file, page))");
+					"    unique (file, page)," +
+					"    primary key (id))");
 
-			jdbcTemplate.execute("insert into ewiki select key, '', modified, value from ewiki_old");
+			jdbcTemplate.execute("insert into ewiki (file, page, modified, contents) select key, '', modified, value from ewiki_old");
 
 			release = 2;
 			jdbcTemplate.update("update ewiki_version set release = ?", new Object[] {release});
@@ -62,7 +64,8 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 	private class EwikiExtractor implements RowMapper<FileInfo> {
 		@Override
 		public FileInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new FileInfo(rs.getString("file"),
+			return new FileInfo(rs.getInt("id"),
+					rs.getString("file"),
 					rs.getString("page"),
 					rs.getLong("modified"),
 					new String(bEncrypt.decrypt(Base64.getDecoder().decode(rs.getString("contents")))));
@@ -84,5 +87,38 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 				page,
 				System.currentTimeMillis(),
 				Base64.getEncoder().encodeToString(bEncrypt.encrypt(contents.getBytes())));
+	}
+
+	public void saveFileContents(FileInfo req) {
+		if (req.getId() < 0) {
+			jdbcTemplate.update("insert into ewiki (file,page,modified,contents)" +
+					"values (?,?,?,?)",
+					req.getFile(),
+					req.getPage(),
+					System.currentTimeMillis(),
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt(req.getContents().getBytes())));
+		}
+		else {
+			jdbcTemplate.update("update ewiki set modified=?, contents=? where id=?",
+					System.currentTimeMillis(),
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt(req.getContents().getBytes())),
+					req.getId());
+		}
+	}
+
+	public void saveFileTab(FileInfo req) {
+		if (req.getId() < 0) {
+			jdbcTemplate.update("insert into ewiki (file,page,modified,contents)" +
+					"values (?,?,?,?)",
+					req.getFile(),
+					req.getPage(),
+					System.currentTimeMillis(),
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt(req.getContents().getBytes())));
+		}
+		else {
+			jdbcTemplate.update("update ewiki set page=? where id=?",
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt(req.getContents().getBytes())),
+					req.getId());
+		}
 	}
 }
