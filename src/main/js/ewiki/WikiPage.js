@@ -38,13 +38,13 @@ export default function WikiPage(props) {
 			editTabMode
 				? <div>
 					Edit tab mode
+					<div id="buttonBlock">
+						<button onClick={() => setEditTabMode(false)}>Cancel</button>
+					</div>
 					{wikiState.wiki.map((f, i) => <div key={i}>
 						<FieldEdit value={f.tab} updateFunc={(value) => {savePageTab(f.id, f.page, value)}} blank='TAB_NAME'/>
 					</div>)}
 					<FieldEdit value='' updateFunc={(value) => {savePageTab(-1, page, value)}} blank='NEW_TAB'/>
-					<div id="buttonBlock">
-						<button onClick={() => setEditTabMode(false)}>Cancel</button>
-					</div>
 				</div>
 				: <div>
 					{ wikiState.wiki == null
@@ -91,14 +91,14 @@ function WikiTab(props) {
 	})
 
 	return <>
-			{!editMode && <div dangerouslySetInnerHTML={{__html: contents}}></div>}
-			{ !editMode && props.editAllowed && <div id="buttonBlock">
+			{!editMode && props.editAllowed && <div id="buttonBlock">
 				<button onClick={() => props.setEditTabModeFunc(true)}>Edit tabs</button>
 				<button onClick={() => setEditMode(true)}>Edit</button>
 				</div>
 			}
+			{!editMode && <div dangerouslySetInnerHTML={{__html: contents}}></div>}
 			{ editMode && <div className="content">
-				<textarea id="fText" name="text" rows='30' cols='130' ref={textInput}></textarea><br/>
+				<textarea id="fText" name="text" rows='40' cols='200' ref={textInput}></textarea><br/>
 				<table>
 					<tbody>
 						<tr><td><button onClick={() => {setEditMode(false);props.savePageContentsFunc(id, page, tab, textInput.current.value)}}>Save</button></td>
