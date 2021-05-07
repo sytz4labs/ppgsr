@@ -42,7 +42,7 @@ public class WikiServletDB {
     	
     	var pages = wikiDao.getPage(req.getPage());
     	if (pages.size() == 0) {
-    		pages.add(new PageInfo(-1, req.getPage(), "", 0, "Undefined"));
+    		pages.add(new PageInfo(-1, -1, req.getPage(), "", 0, "Undefined"));
     	}
 
 		return pages; 
@@ -64,6 +64,16 @@ public class WikiServletDB {
 	public List<PageInfo> savePageTab(@RequestBody PageInfo req) throws Exception {
 
 		wikiDao.savePageTab(req);
+
+		return pageService(req);
+	}
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/ewiki/saveMoveTab/{direction}")
+    @ResponseBody
+	public List<PageInfo> saveMoveTab(@RequestBody PageInfo req, @PathVariable String direction) throws Exception {
+
+		wikiDao.saveMoveTab(req, direction);
 
 		return pageService(req);
 	}

@@ -29,8 +29,12 @@ export default function WikiPage(props) {
 		postWiki(dispatch, 'savePage', {id, page, tab, contents}, setAffirm);
 	};
 
-	const savePageTab = (id, page, tab) => {
-		postWiki(dispatch, 'savePageTab', {id, page, tab}, setAffirm);
+	const savePageTab = (id, sort, page, tab) => {
+		postWiki(dispatch, 'savePageTab', {id, sort, page, tab}, setAffirm);
+	};
+
+	const saveMoveTab = (direction, id, page) => {
+		postWiki(dispatch, 'saveMoveTab/' + direction, {id, page});
 	};
 
 	return <>
@@ -39,12 +43,16 @@ export default function WikiPage(props) {
 				? <div>
 					Edit tab mode
 					<div id="buttonBlock">
-						<button onClick={() => setEditTabMode(false)}>Cancel</button>
+						<button onClick={() => setEditTabMode(false)}>Done</button>
 					</div>
 					{wikiState.wiki.map((f, i) => <div key={i}>
-						<FieldEdit value={f.tab} updateFunc={(value) => {savePageTab(f.id, f.page, value)}} blank='TAB_NAME'/>
+						<span className='edit'>
+							<span onClick={() => {saveMoveTab('up', f.id, f.page)}}> &#x25B2;</span>
+							<span onClick={() => {saveMoveTab('down', f.id, f.page)}}> &#x25BC;</span>
+						</span>
+						<FieldEdit value={f.tab} updateFunc={(value) => {savePageTab(f.id, f.sort, f.page, value)}} blank='TAB_NAME'/>
 					</div>)}
-					<FieldEdit value='' updateFunc={(value) => {savePageTab(-1, page, value)}} blank='NEW_TAB'/>
+					<FieldEdit value='' updateFunc={(value) => {savePageTab(-1, -1, page, value)}} blank='NEW_TAB'/>
 				</div>
 				: <div>
 					{ wikiState.wiki == null
@@ -102,7 +110,7 @@ function WikiTab(props) {
 				<table>
 					<tbody>
 						<tr><td><button onClick={() => {setEditMode(false);props.savePageContentsFunc(id, page, tab, textInput.current.value)}}>Save</button></td>
-							<td><button onClick={() => setEditMode(false)}>Cancel</button></td></tr>
+							<td><button onClick={() => setEditMode(false)}>Close</button></td></tr>
 					</tbody>
 				</table>
 				</div>

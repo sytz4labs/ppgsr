@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public @Data class PageInfo {
 	public int id;
+	public int sort;
 	public String page;
 	public String tab;
 	public long modified;
