@@ -71,14 +71,14 @@ public class ConfigDao implements ApplicationListener<ApplicationReadyEvent> {
 	public String getValue(String key) {
 		final String[] r = new String[1];
 		
-		jt.query("select value from config where name = ?",
-				new Object[] {key}, 
+		jt.query("select value from config where name = ?", 
 				new RowCallbackHandler() {
 						@Override
 						public void processRow(ResultSet rs) throws SQLException {
 							r[0] = rs.getString(1);
 						}
-		});
+				},
+				key);
 		
 		return r[0];
 	}

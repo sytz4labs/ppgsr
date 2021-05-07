@@ -76,8 +76,8 @@ public class BdgtDao {
 		TranSpecRowCallback cb = new TranSpecRowCallback();
 		
 		jt.query("select id, description, nMons, day, type, value from bdgt_tran_spec where id=?",
-				new Object[] {spec_id},
-				cb);
+				cb,
+				spec_id);
 		
 		return cb.getTranSpecs().get(0);
 	}
