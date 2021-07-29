@@ -18,8 +18,8 @@ export default function TasksView() {
                                 <tr className='bordered'>
                                     <th style={{width: '100px'}}>Area</th>
                                     <th style={{width: ' 75px'}}>Priority</th>
-                                    <th style={{width: '250px'}}>Task</th>
-                                    <th style={{width: '250px'}}>Notes</th>
+                                    <th style={{width: '700px'}}>Task</th>
+                                    <th style={{width: '700px'}}>Notes</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -29,13 +29,13 @@ export default function TasksView() {
                                     <td><FieldEdit value='' updateFunc={(value) => {setReq({cmd: 'new', val: value})}} blank='NEW_TASK'/></td>
                                     <td></td>
                                 </tr>
-                                {taskStatus.data.map((task) => 
+                                {taskStatus.data.map((task, i) => 
                                     (showCompleted || task.priority >= 0) &&
-                                        <tr key={task.id} className={'bordered'}>
-                                            <td style={{textAlign: 'center'}}><FieldEdit value={task.area} updateFunc={(value) => {setReq({cmd: 'area', id: task.id, val: value})}} blank='BLANK'/></td>
-                                            <td style={{textAlign: 'center'}}><FieldEdit value={task.priority.toString()} updateFunc={(value) => {setReq({cmd: 'priority', id: task.id, val: value})}} blank='BLANK' size='5'/></td>
-                                            <td><FieldEdit value={task.task} updateFunc={(value) => {setReq({cmd: 'task', id: task.id, val: value})}} blank='BLANK'/></td>
-                                            <td><FieldEdit value={task.benefit} updateFunc={(value) => {setReq({cmd: 'benefit', id: task.id, val: value})}} blank='BLANK'/></td>
+                                        <tr key={task.id} className={'bordered' + (i%2==0 ? ' tbl-odd' : '')}>
+                                            <td style={{textAlign: 'center', verticalAlign: 'top'}}><FieldEdit value={task.area} updateFunc={(value) => {setReq({cmd: 'area', id: task.id, val: value})}} blank='BLANK'/></td>
+                                            <td style={{textAlign: 'center', verticalAlign: 'top'}}><FieldEdit value={task.priority.toString()} updateFunc={(value) => {setReq({cmd: 'priority', id: task.id, val: value})}} blank='BLANK' size='5'/></td>
+                                            <td style={{verticalAlign: 'top'}}><FieldEdit value={task.task} updateFunc={(value) => {setReq({cmd: 'task', id: task.id, val: value})}} blank='BLANK'/></td>
+                                            <td style={{verticalAlign: 'top'}}><FieldEdit value={task.benefit} updateFunc={(value) => {setReq({cmd: 'benefit', id: task.id, val: value})}} blank='BLANK'/></td>
                                         </tr>)
                                     }
                             </tbody>
