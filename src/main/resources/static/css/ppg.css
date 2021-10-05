@@ -198,3 +198,7 @@ tr.bordered {
 	text-decoration: none;
 	color: inherit;
 }
+
+.react-clock__face {
+	background-color: white;
+}
