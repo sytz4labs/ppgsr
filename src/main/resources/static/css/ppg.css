@@ -202,3 +202,23 @@ tr.bordered {
 .react-clock__face {
 	background-color: white;
 }
+
+.flexCol {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1
+}
+
+.flexRow {
+	display: flex;
+	flex-direction: row;
+	flex-grow: 1
+}
+
+.flexAbsolute {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}

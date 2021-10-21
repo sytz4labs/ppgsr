@@ -6,16 +6,18 @@ const useFetchPost = (url, req, initialValue) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('')
     useEffect(() => {
-        setLoading(true);
-        axios.post(url, req)
-            .then(function (response) {
-                setData(response.data);
-                setLoading(false);
-             })
-            .catch(function (error) {
-                setError(error.message);
-                setLoading(false);
-            });
+        if (req != null) {
+            setLoading(true);
+            axios.post(url, req)
+                .then(function (response) {
+                    setData(response.data);
+                    setLoading(false);
+                 })
+                .catch(function (error) {
+                    setError(error.message);
+                    setLoading(false);
+                });
+            }
     }, [url, req]);
     return { loading, data, error };
 };
