@@ -6,6 +6,7 @@ module.exports = {
 		index: './src/main/js/index/index.js',
 		budget: './src/main/js/budget/budget.js',
 		cam: './src/main/js/cam/cam.js',
+		clock: './src/main/js/clock/index.js',
 		config: './src/main/js/config/config.js',
 		ewiki: './src/main/js/ewiki/wiki.js',
 		fu: './src/main/js/fu/fu.js',
