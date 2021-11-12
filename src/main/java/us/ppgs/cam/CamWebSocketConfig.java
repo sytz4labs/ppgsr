@@ -9,9 +9,8 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class CamWebSocketConfig implements WebSocketConfigurer {
 
-
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(new CamWebSocket(), "/camws").setAllowedOrigins("*");
+		registry.addHandler(new CamWebSocketLive(), "/camlivews").setAllowedOrigins("*");
 	}
-
 }
