@@ -4,7 +4,6 @@ server:
       cookie:
         secure: true
   forward-headers-strategy: framework
-  
 spring:
   application:
     name: pss
@@ -21,6 +20,8 @@ spring:
     multipart:
       max-file-size: 3000MB
       max-request-size: 3000MB
+  session:
+    timeout: 8H
 ---
 spring:
   config:
