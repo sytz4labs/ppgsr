@@ -3,13 +3,14 @@ package us.ppgs.cam;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Component;
+
+import us.ppgs.config.ConfigFacility;
 
 public class CamUDPThread extends Thread {
 
@@ -33,7 +34,7 @@ public class CamUDPThread extends Thread {
 	@Override
 	public void run() {
 
-		int port = 12345;
+		int port = ConfigFacility.getInt("camUdpPort", 12345);
 		
 		DatagramSocket serverSocket = null;
 		try {
@@ -47,6 +48,7 @@ public class CamUDPThread extends Thread {
 				try {
 					serverSocket.receive(receivePacket);
 					var msg = new String(receivePacket.getData(), 0, receivePacket.getLength());
+					System.out.println(receivePacket.getAddress() + " " + msg);
 					socket.send(msg);
 				}
 				catch (SocketTimeoutException ste) {
