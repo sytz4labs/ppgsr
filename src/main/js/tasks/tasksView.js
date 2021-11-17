@@ -1,18 +1,28 @@
 import React, { useState } from 'react'; 
+import DropEdit from '../components/DropEdit';
 import FieldEdit from '../components/FieldEdit';
 import useFetchPost from '../lib/useFetchPost';
 
 export default function TasksView() {
 
     const [ req, setReq ] = useState({cmd: 'get'})
+    const [ areaFilter, setAreaFilter ] = useState('all')
     const [ showCompleted, setShowCompleted ] = useState(false)
     const taskStatus = useFetchPost('/tasks/get', req, null);
+
+    const areas = taskStatus.data == null ? null : taskStatus.data.areas;
+    const areaOpts = areas == null ? [] : areas.map((a, i) => { return a == "" ? { value: 'all', text: 'all'} : { value: a, text: a};});
+
+    const tasks = taskStatus.data == null ? null : taskStatus.data.tasks.filter(t => {
+        return (areaFilter == 'all' || areaFilter == t.area);
+    });
 
     return <div id="content" style={{backgroundColor: 'white'}}>
                     { taskStatus.data == null
                         ? 'Loading. . .'
                         : <>
-                            <input type='checkbox' onChange={e => setShowCompleted(!showCompleted)} checked={showCompleted} />Show Completed
+                            <input type='checkbox' onChange={e => setShowCompleted(!showCompleted)} checked={showCompleted} />Show Completedd
+                            <div>Filter: <DropEdit value={areaFilter} options={areaOpts} updateFunc={(value) => setAreaFilter(value)} /></div>
                             <table style={{borderCollapse: 'collapse'}}>
                             <thead>
                                 <tr className='bordered'>
@@ -29,7 +39,7 @@ export default function TasksView() {
                                     <td><FieldEdit value='' updateFunc={(value) => {setReq({cmd: 'new', val: value})}} blank='NEW_TASK'/></td>
                                     <td></td>
                                 </tr>
-                                {taskStatus.data.map((task, i) => 
+                                {tasks.map((task, i) => 
                                     (showCompleted || task.priority >= 0) &&
                                         <tr key={task.id} className={'bordered' + (i%2==0 ? ' tbl-odd' : '')}>
                                             <td style={{textAlign: 'center', verticalAlign: 'top'}}><FieldEdit value={task.area} updateFunc={(value) => {setReq({cmd: 'area', id: task.id, val: value})}} blank='BLANK'/></td>
@@ -42,5 +52,5 @@ export default function TasksView() {
                         </table>
                         </>
                     }
-    </div>;
+    </div>
 }

@@ -47,7 +47,7 @@ public class TasksDAO implements ApplicationListener<ApplicationReadyEvent> {
 				new Object[] { task});
 	}	
 
-	public List<TaskInfo> get() {
+	public List<TaskInfo> getTasks() {
 		
 		final List<TaskInfo> r = new ArrayList<TaskInfo>();
 
@@ -64,6 +64,21 @@ public class TasksDAO implements ApplicationListener<ApplicationReadyEvent> {
 								rs.getString("notes"));
 						
 						r.add(ti);
+					}
+		});
+				
+		return r;
+	}
+
+	public List<String> getAreas() {
+		
+		final List<String> r = new ArrayList<String>();
+
+		jt.query("select distinct area from tasks order by area",
+				new RowCallbackHandler() {
+					@Override
+					public void processRow(ResultSet rs) throws SQLException {
+						r.add(rs.getString("area"));
 					}
 		});
 				

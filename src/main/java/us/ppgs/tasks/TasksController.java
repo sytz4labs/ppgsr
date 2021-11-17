@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Controller
@@ -34,9 +35,16 @@ public class TasksController {
 		private String val;
 	}
 	
+	@Data
+	@AllArgsConstructor
+	public static class Res {
+		private List<String> areas;
+		private List<TaskInfo> tasks;
+	}
+	
 	@RequestMapping(value="/get", method=RequestMethod.POST)
 	@ResponseBody
-	public List<TaskInfo> get(@RequestBody TaskReq req) {
+	public Res get(@RequestBody TaskReq req) {
 
 		switch(req.getCmd()) {
 		case "new":
@@ -50,7 +58,7 @@ public class TasksController {
 			break;
 		}
 		
-		return tDao.get();
+		return new Res(tDao.getAreas(), tDao.getTasks());
 	}
 }
 
