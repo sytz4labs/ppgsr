@@ -42,9 +42,9 @@ public class TasksDAO implements ApplicationListener<ApplicationReadyEvent> {
 		}
 	}
 
-	public void newTask(String task) {
-		jt.update("insert into tasks (area, priority, task, benefit, notes) values('', 1000, ?, '', '')",
-				new Object[] { task});
+	public void newTask(String area, String task) {
+		jt.update("insert into tasks (area, priority, task, benefit, notes) values(?, 1000, ?, '', '')",
+				new Object[] { area, task});
 	}	
 
 	public List<TaskInfo> getTasks() {

@@ -33,6 +33,8 @@ public class TasksController {
 		private String cmd;
 		private int id;
 		private String val;
+		private String area;
+		private String task;
 	}
 	
 	@Data
@@ -48,7 +50,7 @@ public class TasksController {
 
 		switch(req.getCmd()) {
 		case "new":
-			tDao.newTask(req.getVal());
+			tDao.newTask(req.getArea(), req.getTask());
 			break;
 		case "area":
 		case "priority":
