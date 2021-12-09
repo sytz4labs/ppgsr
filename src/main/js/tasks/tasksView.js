@@ -36,7 +36,7 @@ export default function TasksView() {
                                 <tr className={'bordered'}>
                                     <td></td>
                                     <td></td>
-                                    <td><FieldEdit value='' updateFunc={(value) => {setReq({cmd: 'new', val: value})}} blank='NEW_TASK'/></td>
+                                    <td><FieldEdit value='' updateFunc={(value) => {setReq({cmd: 'new', area: areaFilter == 'all' ? '' : areaFilter, task: value})}} blank='NEW_TASK'/></td>
                                     <td></td>
                                 </tr>
                                 {tasks.map((task, i) => 
