@@ -68,8 +68,9 @@ export default function BudgetView(props) {
 							<tr className='bordered'>
 								<th style={{width: '120px', textAlign: 'center'}}>Date</th>
 								<th style={{width: '250px'}}>Description</th>
-								<th style={{width: ' 75px', textAlign: 'center'}}>Type</th>
 								<th style={{width: ' 75px', textAlign: 'center'}}>State</th>
+								<th style={{width: '275px'}}></th>
+								<th style={{width: ' 75px', textAlign: 'center'}}>Type</th>
 								<th style={{width: '200px', textAlign: 'right'}}>Debit</th>
 								<th style={{width: '200px', textAlign: 'right'}}>Credit</th>
 								<th style={{width: '100px', textAlign: 'right'}}>Balance</th>
@@ -89,19 +90,7 @@ export default function BudgetView(props) {
 									<td>{tran.spec == null
 										? <FieldEdit value={tran.description} blank='NEW' updateFunc={(value) => budgetHandler('t.description|'+tran.id, value)} />
 										: tran.spec.description}</td>
-									<td style={{textAlign: 'center'}}>{tran.spec == null
-										? <DropEdit value={tran.type} options={specTypes} updateFunc={(value) => budgetHandler('t.type|'+tran.id, value)} />
-										: tran.spec.type}</td>
 									<td style={{textAlign: 'center'}}>{tran.state}</td>
-									<td style={{textAlign: 'right'}}>{
-										tran.type == 'DBT' && (tran.state == 'Proposed' || tran.state == 'Scheduled'
-											? <FieldEdit value={formatCurrency(tran.value)} blank='BLANK' updateFunc={(value) => budgetHandler('t.value|'+tran.id, value)}/>
-											: formatCurrency(tran.value))}</td>
-									<td style={{textAlign: 'right'}}>{
-										tran.type == 'CRDT' && (tran.state == 'Proposed' || tran.state == 'Scheduled'
-											? <FieldEdit value={formatCurrency(tran.value)} blank='BLANK' updateFunc={(value) => budgetHandler('t.value|'+tran.id, value)}/>
-											: formatCurrency(tran.value))}</td>
-									<td style={{textAlign: 'right'}}>{formatCurrency(tran.subTotal)}</td>
 									<td>
 										{tran.firstGenerated &&
 											<button onClick={() => budgetHandler('setTran', tran.spec.id + '|' + tran.date)}>Propose</button>}
@@ -112,6 +101,18 @@ export default function BudgetView(props) {
 												<button onClick={() => budgetHandler('delTran', tran.id)}>Delete</button>
 												<button onClick={() => budgetHandler('clrTran', tran.id)}>Cleared</button></span>}
 									</td>
+									<td style={{textAlign: 'center'}}>{tran.spec == null
+										? <DropEdit value={tran.type} options={specTypes} updateFunc={(value) => budgetHandler('t.type|'+tran.id, value)} />
+										: tran.spec.type}</td>
+									<td style={{textAlign: 'right'}}>{
+										tran.type == 'DBT' && (tran.state == 'Proposed' || tran.state == 'Scheduled'
+											? <FieldEdit value={formatCurrency(tran.value)} blank='BLANK' updateFunc={(value) => budgetHandler('t.value|'+tran.id, value)}/>
+											: formatCurrency(tran.value))}</td>
+									<td style={{textAlign: 'right'}}>{
+										tran.type == 'CRDT' && (tran.state == 'Proposed' || tran.state == 'Scheduled'
+											? <FieldEdit value={formatCurrency(tran.value)} blank='BLANK' updateFunc={(value) => budgetHandler('t.value|'+tran.id, value)}/>
+											: formatCurrency(tran.value))}</td>
+									<td style={{textAlign: 'right'}}>{formatCurrency(tran.subTotal)}</td>
 								</tr>)}
 						</tbody>
 					</table>
