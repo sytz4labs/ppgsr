@@ -69,20 +69,21 @@ export default function BudgetView(props) {
 								<th style={{width: '120px', textAlign: 'center'}}>Date</th>
 								<th style={{width: '250px'}}>Description</th>
 								<th style={{width: ' 75px', textAlign: 'center'}}>State</th>
-								<th style={{width: '275px'}}></th>
-								<th style={{width: ' 75px', textAlign: 'center'}}>Type</th>
-								<th style={{width: '200px', textAlign: 'right'}}>Debit</th>
-								<th style={{width: '200px', textAlign: 'right'}}>Credit</th>
+								<th style={{width: '150px'}}></th>
+								<th style={{width: ' 50px', textAlign: 'center'}}>Type</th>
+								<th style={{width: '100px', textAlign: 'right'}}>Debit</th>
+								<th style={{width: '100px', textAlign: 'right'}}>Credit</th>
 								<th style={{width: '100px', textAlign: 'right'}}>Balance</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr className='bordered'>
-								<td style={{textAlign: 'center'}}><Calendar value='' blank='NEW' updateFunc={(date) => budgetHandler('newTran', date)} /></td>
+							<tr className='bordered separate' >
+								<td style={{textAlign: 'center'}}>
+									<Calendar value='' blank='NEW' updateFunc={(date) => budgetHandler('newTran', date)} /></td>
 								<td colSpan='6'></td>
 							</tr>
-							{transactions.trans.map((tran, tranOrd) => 
-								<tr key={tranOrd} className={'bordered'} style={tran.month % 2 == 0 ? {backgroundColor: '#eef'} :  {}}>
+							{transactions.trans.map((tran, tranOrd, trans) => 
+								<tr key={tranOrd} className={trans[tranOrd].month ==  trans[(tranOrd+1) % trans.length].month ? 'bordered' : 'separate'} style={tranOrd % 2 == 0 ? {backgroundColor: '#eef'} :  {}}>
 									<td style={{textAlign: 'center'}}>{tran.state == 'Estimate' || tran.state == 'Cleared'
 										? tran.date
 										: <Calendar value={tran.date} blank='huh?' updateFunc={(date) => budgetHandler('t.date|' + tran.id, date)} /> }
@@ -113,6 +114,7 @@ export default function BudgetView(props) {
 											? <FieldEdit value={formatCurrency(tran.value)} blank='BLANK' updateFunc={(value) => budgetHandler('t.value|'+tran.id, value)}/>
 											: formatCurrency(tran.value))}</td>
 									<td style={{textAlign: 'right'}}>{formatCurrency(tran.subTotal)}</td>
+									<td>{trans[tranOrd].month}</td>
 								</tr>)}
 						</tbody>
 					</table>

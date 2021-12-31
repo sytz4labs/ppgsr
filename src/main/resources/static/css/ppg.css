@@ -161,6 +161,10 @@ tr.bordered {
 	 border-bottom: 1px solid #ccc;
 }
 
+tr.separate {
+	 border-bottom: 3px solid #666;
+}
+
 .ezCalendar {
 	position: absolute;
 	background: #fff;
