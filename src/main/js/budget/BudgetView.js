@@ -10,7 +10,7 @@ import { useBudgetReducer } from './budgetReducer';
 
 Modal.setAppElement('#react');
 
-export default function BudgetView(props) {
+export default function BudgetView() {
 
 	const [ budgetState, dispatch ] = useBudgetReducer();
 	useEffect(() => {
@@ -107,14 +107,13 @@ export default function BudgetView(props) {
 										: tran.spec.type}</td>
 									<td style={{textAlign: 'right'}}>{
 										tran.type == 'DBT' && (tran.state == 'Proposed' || tran.state == 'Scheduled'
-											? <FieldEdit value={formatCurrency(tran.value)} blank='BLANK' updateFunc={(value) => budgetHandler('t.value|'+tran.id, value)}/>
+											? <FieldEdit value={formatCurrency(tran.value)} size='8' blank='BLANK' updateFunc={(value) => budgetHandler('t.value|'+tran.id, value)}/>
 											: formatCurrency(tran.value))}</td>
 									<td style={{textAlign: 'right'}}>{
 										tran.type == 'CRDT' && (tran.state == 'Proposed' || tran.state == 'Scheduled'
-											? <FieldEdit value={formatCurrency(tran.value)} blank='BLANK' updateFunc={(value) => budgetHandler('t.value|'+tran.id, value)}/>
+											? <FieldEdit value={formatCurrency(tran.value)} size='8' blank='BLANK' updateFunc={(value) => budgetHandler('t.value|'+tran.id, value)}/>
 											: formatCurrency(tran.value))}</td>
 									<td style={{textAlign: 'right'}}>{formatCurrency(tran.subTotal)}</td>
-									<td>{trans[tranOrd].month}</td>
 								</tr>)}
 						</tbody>
 					</table>
@@ -133,11 +132,11 @@ export default function BudgetView(props) {
 						<tbody>
 							{transactions.transSpecs.map((tran, tranOrd) => 
 									<tr key={tranOrd} className={'bordered'} style={tranOrd % 2 == 0 ? {backgroundColor: '#eef'} :  {}}>
-										<td><FieldEdit value={tran.description} blank='BLANK' updateFunc={(value) => budgetHandler('ts.description|'+tran.id, value)}/></td>
+										<td><FieldEdit value={tran.description} size='30' blank='BLANK' updateFunc={(value) => budgetHandler('ts.description|'+tran.id, value)}/></td>
 										<td><DropEdit value={tran.nmons} options={nMonsValues} updateFunc={(value) => budgetHandler('ts.nMons|'+tran.id, value)} /></td>
 										<td><DropEdit value={tran.day} options={dayValues} updateFunc={(value) => budgetHandler('ts.day|'+tran.id, value)} /></td>
 										<td><DropEdit value={tran.type} options={specTypes} updateFunc={(value) => budgetHandler('ts.type|'+tran.id, value)} /></td>
-										<td style={{textAlign: 'right'}}><FieldEdit value={formatCurrency(tran.value)} blank='BLANK' updateFunc={(value) => budgetHandler('ts.value|'+tran.id, value)}/></td>
+										<td style={{textAlign: 'right'}}><FieldEdit value={formatCurrency(tran.value)} size='8' blank='BLANK' updateFunc={(value) => budgetHandler('ts.value|'+tran.id, value)}/></td>
 									</tr>)
 							}
 							<tr>
