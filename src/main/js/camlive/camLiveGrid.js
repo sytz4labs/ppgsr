@@ -5,7 +5,14 @@ export default function CamLiveGrid() {
 
     const canvas = useRef(null);
     const [ d, setD ] = useState({image: "ka"})
-    useCamLiveSocket((m) => setD(m));
+    useCamLiveSocket((m) => {
+        if (m.image == "ka") {
+            setD({...d, timek: m.time})
+        }
+        else {
+            setD({...d, timei: m.time, image: m.image})
+        }
+    });
     useEffect(() => {
 
         if (canvas.current != null && d.image != "ka") {
@@ -21,8 +28,8 @@ export default function CamLiveGrid() {
     }, [d])
 
     return <div>
-        <div>{d.time}</div>
-        <div>{d.image == "ka" ? 'keepalive' : 'image'}</div>
+        <div>{d.timek} keepAlive</div>
+        <div>{d.timei} image</div>
         <canvas id="myCv" height="720" width="960" ref={canvas}></canvas>
     </div>
 }

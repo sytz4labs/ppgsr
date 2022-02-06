@@ -45,7 +45,9 @@ public class WikiServlet {
 	    {"I DON'T HAVE THE ENERGY:", "I feel passionately about my life, and this passion fills me with excitement and energy."},
 	    {"IT'S MY PERSONAL FAMILY HISTORY:", "I live in the present moment by being grateful for all of my life experiences as a child."},
 	    {"I'M TOO BUSY:", "As I unclutter my life, I free myself to answer the callings of my soul."},
-	    {"I'M TOO SCARED:", "I can accomplish anything I put my mind to, because I know that I am never alone."}};
+	    {"I'M TOO SCARED:", "I can accomplish anything I put my mind to, because I know that I am never alone."},
+	    {"Only the ephemeral is of lasting value.", ""}
+	    };
 
     //Tue, 11 May 2010 22:04:44 GMT
     private static SimpleDateFormat fmt = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
