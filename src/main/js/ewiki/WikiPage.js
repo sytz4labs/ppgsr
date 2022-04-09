@@ -7,9 +7,12 @@ import { useWikiReducer } from './wikiReducer';
 import { useAppHeader } from '../components/AppHeader'
 import FieldEdit from "../components/FieldEdit";
 import { Tab, TabSet } from "../components/TabSet";
+import { useParams } from "react-router-dom";
 
-export default function WikiPage(props) {
-	var page = props.match.path == "/ewiki/:page" ? props.match.params.page : 'index';
+export default function WikiPage() {
+
+	const params = useParams();
+	var page = params.page != null ? params.page : 'index';
 
 	const [ editTabMode, setEditTabMode] = useState(false);
 	const [ wikiState, dispatch ] = useWikiReducer();

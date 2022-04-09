@@ -1,15 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import LinkGrid from './LinkGrid'
 
 const routes = (
   <div>
-    <Switch>
-      <Route path="/lf/" exact component={LinkGrid} />
-      <Route path="/lf/:pageName" component={LinkGrid} />
+    <Routes>
+      <Route path="/lf/" exact element={<LinkGrid/>} />
+      <Route path="/lf/:pageName" element={<LinkGrid/>} />
       <Route render={() => (<h1>Error</h1>)} />
-    </Switch>
+    </Routes>
   </div>
 );
 

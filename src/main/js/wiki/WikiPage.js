@@ -1,13 +1,16 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useLoginDialog } from '../login/LoginDialog'
 
 import { postWiki } from './wikiActions';
 import { useWikiReducer } from './wikiReducer';
 import { useAppHeader } from '../components/AppHeader'
+import { useParams } from "react-router-dom";
 
 export default function WikiPage(props) {
-	var pageName = props.match.path == "/wiki/:pageName" ? props.match.params.pageName : 'index';
+
+	const params = useParams();
+	var pageName = params.pageName != null ? params.pageName : 'index';
 
 	const [ editMode, setEditMode] = useState(false)
 	const textInput = useRef();

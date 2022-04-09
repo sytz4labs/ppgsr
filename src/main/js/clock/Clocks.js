@@ -7,12 +7,14 @@ import useFetchPost from '../lib/useFetchPost'
 import ZoneClock from './ZoneClock';
 import ZoneModal from './ZoneModel';
 import { useInterval } from '../lib/useInterval';
+import { useParams } from 'react-router-dom';
 
 Modal.setAppElement('#react');
 
-export default function Clocks(props) {
+export default function Clocks() {
 
-    const clockSetId = props.match.params.clockSetId;
+    const params = useParams();
+    const clockSetId = params.clockSetId;
     const [ clockReq, setClockReq ] = useState(null)
     const clockReqStatus = useFetchPost('/clock/api/clockReq', clockReq, null);
 

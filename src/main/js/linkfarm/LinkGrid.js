@@ -5,12 +5,14 @@ import { getLinks, postLinks } from "./linkActions"
 import FieldEdit from "../components/FieldEdit"
 import { useLinksReducer } from './linksReducer';
 import { useLoginDialog } from '../login/LoginDialog';
+import { useParams } from 'react-router-dom';
 
 Modal.setAppElement('#react');
 
-export default function LinkGrid(props) {
+export default function LinkGrid() {
 
-	const pageName = props.match.path == "/lf/:pageName" ? props.match.params.pageName : '';
+	const params = useParams();
+	const pageName = params.pageName != null ? params.pageName : '';
 
 	const [ linkState, setLinkState ] = useState({ linkEditMode: false })
 	const [ linksR, dispatch ] = useLinksReducer();

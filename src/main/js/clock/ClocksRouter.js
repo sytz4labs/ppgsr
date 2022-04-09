@@ -1,14 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Clocks from './Clocks'
 
 const routes = (
     <div>
-        <Switch>
-            <Route path="/clock/:clockSetId" component={Clocks} />
+        <Routes>
+            <Route path="/clock/:clockSetId" element={<Clocks/>} />
             <Route render={() => (<h1>Error</h1>)} />
-        </Switch>
+        </Routes>
     </div>
 );
 
