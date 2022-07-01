@@ -33,15 +33,8 @@ public class ConfigDao implements ApplicationListener<ApplicationReadyEvent> {
 					+ "name varchar(255) not null,"
 					+ "multi_line boolean,"
 					+ "length int,"
-					+ "value text,"
+					+ "cValue text,"
 					+ "PRIMARY KEY (id))");
-
-			release = 1;
-			jt.update("update config_version set release = ?", new Object[] {release});
-		}
-		
-		if (release == 1) {
-			jt.execute("alter table config alter column value rename to cValue");
 
 			release = 2;
 			jt.update("update config_version set release = ?", new Object[] {release});

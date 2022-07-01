@@ -28,7 +28,7 @@ spring:
       on-profile:
       - local
   datasource:
-    url: jdbc:h2:c:/my/db/pss4
+    url: jdbc:h2:c:/my/db/pss5
 server:
   servlet:
     session:
@@ -41,7 +41,7 @@ spring:
       on-profile:
       - yoga
   datasource:
-    url: jdbc:h2:c:/my/db/pss4
+    url: jdbc:h2:c:/my/db/pss5
 ---
 spring:
   config:
@@ -49,7 +49,7 @@ spring:
       on-profile:
       - test
   datasource:
-    url: jdbc:h2:./pssTest
+    url: jdbc:h2:./pssTest5
 ---
 spring:
   config:
@@ -57,4 +57,4 @@ spring:
       on-profile:
       - home
   datasource:
-    url: jdbc:h2:./pssHome
+    url: jdbc:h2:./pssHome5

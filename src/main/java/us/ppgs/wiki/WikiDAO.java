@@ -35,20 +35,9 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 		int release = jt.queryForObject("select release from ewiki_version", Integer.class).intValue();
 		
 		if (release == 0) {
-			jt.execute("create table ewiki (" + 
-					"    key varchar(255) not null," +
-					"    modified long not null," +
-					"    value clob not null," +
-					"    PRIMARY KEY (key))");
-			
-			release = incrementRelease(release);
-		}
-		
-		if (release == 1) {
-			jt.execute("alter table ewiki rename to ewiki_old");
-
 			jt.execute("create table ewiki (" +
-					"    id int auto_increment," + 
+					"    id int auto_increment," +
+					"    sort int default -1 not null," + 
 					"    page varchar(255) not null," +
 					"    tab varchar(255) not null," +
 					"    modified long not null," +
@@ -56,16 +45,8 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 					"    unique (page, tab)," +
 					"    primary key (id))");
 
-			jt.execute("insert into ewiki (page, tab, modified, contents) select key, '', modified, value from ewiki_old");
 
-			release = incrementRelease(release);
-		}
-
-		if (release == 2) {
-			jt.execute("alter table ewiki add column sort int default -1 not null after id");
-			jt.execute("update ewiki set sort = id");
-
-			release = incrementRelease(release);
+			release = incrementRelease(2);
 		}
 	}
 
