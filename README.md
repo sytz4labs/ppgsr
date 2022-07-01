@@ -1,7 +1,7 @@
 # Update node modules
 
 ```
-rmdir node* /q/s
+rmdir node_modules /q/s
 del package-lock.json
 npm init
 npm i -s -D @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader style-loader webpack webpack-cli

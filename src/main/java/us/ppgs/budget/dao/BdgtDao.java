@@ -32,14 +32,14 @@ public class BdgtDao {
 		updates = new HashMap<String, String>();
 		updates.put("ts.description",	"update bdgt_tran_spec set modified = now(), description = ? where id = ?");
 		updates.put("ts.nMons",			"update bdgt_tran_spec set modified = now(), nMons = ? where id = ?");
-		updates.put("ts.day",			"update bdgt_tran_spec set modified = now(), day = ? where id = ?");
+		updates.put("ts.day",			"update bdgt_tran_spec set modified = now(), mday = ? where id = ?");
 		updates.put("ts.type",			"update bdgt_tran_spec set modified = now(), type = ? where id = ?");
-		updates.put("ts.value",			"update bdgt_tran_spec set modified = now(), value = ? where id = ?");
+		updates.put("ts.value",			"update bdgt_tran_spec set modified = now(), amount = ? where id = ?");
 		
 		updates.put("t.date",			"update bdgt_tran set modified = now(), date = ? where id = ?");
 		updates.put("t.description",	"update bdgt_tran set modified = now(), description = ? where id = ?");
 		updates.put("t.type",			"update bdgt_tran set modified = now(), type = ? where id = ?");
-		updates.put("t.value",			"update bdgt_tran set modified = now(), value = ? where id = ?");
+		updates.put("t.value",			"update bdgt_tran set modified = now(), amount = ? where id = ?");
 		updates.put("t.state",			"update bdgt_tran set modified = now(), state = ? where id = ?");
 	}
 
@@ -55,9 +55,9 @@ public class BdgtDao {
 			r.add(new BdgtTranSpecInfo(rs.getInt("id"),
 					rs.getString("description"),
 					rs.getInt("nMons"),
-					rs.getInt("day"),
+					rs.getInt("mday"),
 					Type.valueOf(rs.getString("type")),
-					rs.getBigDecimal("value")));
+					rs.getBigDecimal("amount")));
 		}
 	};
 
@@ -66,7 +66,7 @@ public class BdgtDao {
 		
 		TranSpecRowCallback cb = new TranSpecRowCallback();
 		
-		jt.query("select id, description, nMons, day, type, value from bdgt_tran_spec order by description", cb);
+		jt.query("select id, description, nMons, mday, type, amount from bdgt_tran_spec order by description", cb);
 		
 		return cb.getTranSpecs();
 	}
@@ -75,7 +75,7 @@ public class BdgtDao {
 
 		TranSpecRowCallback cb = new TranSpecRowCallback();
 		
-		jt.query("select id, description, nMons, day, type, value from bdgt_tran_spec where id=?",
+		jt.query("select id, description, nMons, mday, type, amount from bdgt_tran_spec where id=?",
 				cb,
 				spec_id);
 		
@@ -86,7 +86,7 @@ public class BdgtDao {
 	public List<BdgtTranInfo> getTrans() {
 		final List<BdgtTranInfo> r = new ArrayList<BdgtTranInfo>();
 		
-		jt.query("select id, spec_id, date, description, type, value, state from bdgt_tran",
+		jt.query("select id, spec_id, date, description, type, amount, state from bdgt_tran",
 				new RowCallbackHandler() {
 						@Override
 						public void processRow(ResultSet rs) throws SQLException {
@@ -96,7 +96,7 @@ public class BdgtDao {
 									new Date(rs.getDate("date").getTime()),
 									rs.getString("description"),
 									type == null ? null : Type.valueOf(rs.getString("type")),
-									rs.getBigDecimal("value"),
+									rs.getBigDecimal("amount"),
 									State.valueOf(rs.getString("state"))));
 						}
 		});
@@ -111,7 +111,7 @@ public class BdgtDao {
 
 	public void newTranspec(String value) {
 		
-		jt.update("insert into bdgt_tran_spec (modified, description, nMons, day, type, value) values (now(), ?, ?, ?, ?, ?)",
+		jt.update("insert into bdgt_tran_spec (modified, description, nMons, mday, type, amount) values (now(), ?, ?, ?, ?, ?)",
 				new Object[] {value, 1, 1, BdgtTranSpecInfo.Type.DBT.toString(), 0});
 	}
 
@@ -119,7 +119,7 @@ public class BdgtDao {
 		
 		BdgtTranSpecInfo spec = getTranSpec(specId);
 		
-		jt.update("insert into bdgt_tran (modified, spec_id, date, state, value) values (now(), ?, ?, ?, ?)",
+		jt.update("insert into bdgt_tran (modified, spec_id, date, state, amount) values (now(), ?, ?, ?, ?)",
 				new Object[] {specId, timeMs, State.Proposed.toString(), spec.getValue()});
 	}
 
@@ -129,7 +129,7 @@ public class BdgtDao {
 
 	public void newTran(Date newDate) {
 
-		jt.update("insert into bdgt_tran (spec_id, date, modified, description, type, state, value) values (0, ?, now(), 'NEW', ?, ?, 0)",
+		jt.update("insert into bdgt_tran (spec_id, date, modified, description, type, state, amount) values (0, ?, now(), 'NEW', ?, ?, 0)",
 				new Object[] {newDate, BdgtTranSpecInfo.Type.DBT.toString(), State.Scheduled.toString()});
 	}
 }

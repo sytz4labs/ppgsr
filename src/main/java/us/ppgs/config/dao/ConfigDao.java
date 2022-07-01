@@ -39,12 +39,19 @@ public class ConfigDao implements ApplicationListener<ApplicationReadyEvent> {
 			release = 1;
 			jt.update("update config_version set release = ?", new Object[] {release});
 		}
+		
+		if (release == 1) {
+			jt.execute("alter table config alter column value rename to cValue");
+
+			release = 2;
+			jt.update("update config_version set release = ?", new Object[] {release});
+		}
 	}
 
 	public Map<String, ConfigPair> getCache() {
 		final Map<String, ConfigPair> cache = new TreeMap<String, ConfigPair>();
 
-		jt.query("select id, name, multi_line, length, value from config", new RowCallbackHandler() {
+		jt.query("select id, name, multi_line, length, cValue from config", new RowCallbackHandler() {
 			
 			@Override
 			public void processRow(ResultSet rs) throws SQLException {
@@ -52,7 +59,7 @@ public class ConfigDao implements ApplicationListener<ApplicationReadyEvent> {
 											rs.getString("name"),
 											rs.getBoolean("multi_line"),
 											rs.getInt("length"),
-											rs.getString("value"));
+											rs.getString("cValue"));
 				cache.put(c.getName(), c);
 			}
 		});
@@ -71,7 +78,7 @@ public class ConfigDao implements ApplicationListener<ApplicationReadyEvent> {
 	public String getValue(String key) {
 		final String[] r = new String[1];
 		
-		jt.query("select value from config where name = ?", 
+		jt.query("select cValue from config where name = ?", 
 				new RowCallbackHandler() {
 						@Override
 						public void processRow(ResultSet rs) throws SQLException {
@@ -85,7 +92,7 @@ public class ConfigDao implements ApplicationListener<ApplicationReadyEvent> {
 
 	public void add(String name, String value) throws ConfigException {
 		try {
-			jt.update("insert into config (name, multi_line, length, value) values(?, ?, ?, ?)",
+			jt.update("insert into config (name, multi_line, length, cValue) values(?, ?, ?, ?)",
 					new Object[] { name, isMultiLine(value), value.length(), value });
 		}
 		catch(DuplicateKeyException dae) {
@@ -98,12 +105,12 @@ public class ConfigDao implements ApplicationListener<ApplicationReadyEvent> {
 	}
 	
 	public void save(String name, String value) {
-		jt.update("update config set multi_line=?, length=?, value=? where name=?",
+		jt.update("update config set multi_line=?, length=?, cValue=? where name=?",
 				new Object[] {isMultiLine(value), value.length(), value, name});
 	}
 	
 	public void save(int id, String value) {
-		jt.update("update config set multi_line=?, length=?, value=? where id=?",
+		jt.update("update config set multi_line=?, length=?, cValue=? where id=?",
 				new Object[] {isMultiLine(value), value.length(), value, id});
 	}
 	
