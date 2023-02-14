@@ -2,18 +2,18 @@ package us.ppgs;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class PSSController {
 
-	@RequestMapping("")
+	@GetMapping("")
 	public String index() {
 		return "redirect:/";
 	}
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String indexSlash(Model m) {
-		return "index/index";
+		return "/html/index.html";
 	}
 }

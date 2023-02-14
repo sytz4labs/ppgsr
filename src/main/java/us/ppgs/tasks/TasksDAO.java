@@ -3,7 +3,9 @@ package us.ppgs.tasks;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -70,9 +72,10 @@ public class TasksDAO implements ApplicationListener<ApplicationReadyEvent> {
 		return r;
 	}
 
-	public List<String> getAreas() {
+	public Set<String> getAreas() {
 		
-		final List<String> r = new ArrayList<String>();
+		final Set<String> r = new HashSet<String>();
+		r.add("");
 
 		jt.query("select distinct area from tasks order by area",
 				new RowCallbackHandler() {

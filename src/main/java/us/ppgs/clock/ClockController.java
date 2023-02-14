@@ -12,10 +12,11 @@ import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.AllArgsConstructor;
@@ -72,15 +73,15 @@ public class ClockController {
 		}
 	}
 	
-	@RequestMapping(value={"", "/"})
+	@GetMapping(value={"", "/"})
 	public String indexb() {
 		return "redirect:/clock/default";
 	}
 
-	@RequestMapping("/{id}")
+	@GetMapping("/{id}")
 	public String indexSlash(@PathVariable(required = false) String id) {
 		System.out.printf("'%s'%n", id);
-		return "clock/index";
+		return "/html/clock.html";
 	}
 
 	@Data
@@ -110,7 +111,7 @@ public class ClockController {
 		private String path;
 	}
 
-	@RequestMapping(value={"/api/zoneReq"}, method = RequestMethod.POST)
+	@PostMapping("/api/zoneReq")
 	@ResponseBody
 	public ZoneRes apiZoneReq(@RequestBody ZoneReq req) {
 
@@ -159,7 +160,7 @@ public class ClockController {
 		private String timeLong;
 	}
 
-	@RequestMapping(value={"/api/clockReq"}, method = RequestMethod.POST)
+	@PostMapping("/api/clockReq")
 	@ResponseBody
 	public ClockRes apiClockReq(@RequestBody ClockReq req) throws ConfigException {
 		

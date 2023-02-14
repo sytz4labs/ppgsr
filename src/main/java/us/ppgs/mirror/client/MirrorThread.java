@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
 import us.ppgs.mirror.info.MirrorClientInfo;
@@ -22,7 +22,8 @@ public class MirrorThread {
 	@Async
 	public Future<String> run() {
 
-		String status = "OK";
+		CompletableFuture<String> cf = new CompletableFuture<>();
+		
 		try {
 			MirrorClientInfo mci = MirrorClientInfo.getConfig();
 	    	File logDir = new File(mci.getLogDir());
@@ -38,13 +39,14 @@ public class MirrorThread {
 					ps.close();
 				}
 			}
+			cf.complete("OK");
 		}
 		catch (Exception e) {
-			status = e.getMessage();
+			cf.complete(e.getMessage());
 			e.printStackTrace();
 		}
 
-		return new AsyncResult<>(status);
+		return cf;
 	}
 
 	private static void backup(PrintStream ps, String serverUrl, MirrorDirInfo dir) throws IOException {

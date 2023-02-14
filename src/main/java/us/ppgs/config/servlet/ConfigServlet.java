@@ -5,9 +5,10 @@ import java.util.Collection;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import us.ppgs.config.ConfigFacility;
@@ -19,18 +20,18 @@ import us.ppgs.security.LoginInfo;
 @RequestMapping("/config")
 public class ConfigServlet {
 
-	@RequestMapping("")
+	@GetMapping("")
 	public String indexb() {
 		return "redirect:/config/";
 	}
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String indexSlash() {
-		return "config/index";
+		return "/html/config.html";
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/configs")
+    @GetMapping(value="/configs")
     @ResponseBody
 	public Collection<ConfigPair> configs() {
 
@@ -64,7 +65,7 @@ public class ConfigServlet {
     }
     
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/save", method=RequestMethod.POST)
+    @PostMapping("/save")
     @ResponseBody
 	public Collection<ConfigPair> editHandler(@RequestBody SaveRequest saver) throws IOException {
 

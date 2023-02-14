@@ -6,17 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import us.ppgs.security.RESTAuthenticationEntryPoint;
@@ -25,8 +24,7 @@ import us.ppgs.security.RESTAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
+public class PpgsSecurityConfig {
 
 	@Autowired
 	DataSource dataSource;
@@ -37,17 +35,14 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
     private RESTAuthenticationFailureHandler authenticationFailureHandler;
     @Autowired
     private RESTAuthenticationSuccessHandler authenticationSuccessHandler;
-	@Autowired
-	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+    
+    @Bean
+    UserDetailsManager users(DataSource dataSource) {
+    	return new JdbcUserDetailsManager(dataSource);
+    }
 
-		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("select username,password, enabled from sec_users where username=?")
-				.authoritiesByUsernameQuery("select username, role from sec_user_roles where username=?")
-				.passwordEncoder(new BCryptPasswordEncoder());
-	}
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
     	
         http.requiresChannel()
 		        .requestMatchers(r -> r.getHeader("x-forwarded-proto") != null)
@@ -55,8 +50,8 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
         	.and()
         		.headers().frameOptions().sameOrigin()
         	.and()
-	        	.authorizeRequests()
-	        	.antMatchers("/**", "/login")
+        		.authorizeHttpRequests()
+        		.requestMatchers(new AntPathRequestMatcher("/**"), new AntPathRequestMatcher("/login"), new AntPathRequestMatcher("/pssdb/**"))
 		        .permitAll()
             .and()
             	.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
@@ -67,23 +62,23 @@ public class PpgsSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))
 			.and()
-				.rememberMe().tokenRepository(persistentTokenRepository())
-				.tokenValiditySeconds(30 * 24 * 60 * 60).rememberMeCookieName("RMSESSION")
-        	.and()
-        		.csrf().ignoringAntMatchers("/pssdb/**").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+				.rememberMe().tokenRepository(persistentTokenRepository()).userDetailsService(null)
+				.tokenValiditySeconds(30 * 24 * 60 * 60).rememberMeCookieName("RMSESSION");
+
+        CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
+        requestHandler.setCsrfRequestAttributeName(null);
+        http.csrf(csrf -> csrf
+        		.ignoringRequestMatchers(new AntPathRequestMatcher("/pssdb/**"))
+        		.csrfTokenRequestHandler(requestHandler)
+        		.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+        
+        return http.build();
     }
 
 	@Bean
-	public PersistentTokenRepository persistentTokenRepository() {
+	PersistentTokenRepository persistentTokenRepository() {
 		JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
 		db.setDataSource(dataSource);
 		return db;
-	}
-
-	@Bean
-	public SavedRequestAwareAuthenticationSuccessHandler savedRequestAwareAuthenticationSuccessHandler() {
-		SavedRequestAwareAuthenticationSuccessHandler auth = new SavedRequestAwareAuthenticationSuccessHandler();
-		auth.setTargetUrlParameter("targetUrl");
-		return auth;
 	}
 }

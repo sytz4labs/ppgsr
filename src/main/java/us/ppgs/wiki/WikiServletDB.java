@@ -26,13 +26,13 @@ public class WikiServletDB {
     @PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/ewiki/")
 	public String indexSlash() {
-		return "ewiki/index";
+		return "/html/ewiki.html";
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/ewiki/{page}")
 	public String page(@PathVariable String page, Model m) {
-		return "ewiki/index";
+		return "/ewikiInternal/index.html";
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -17,6 +17,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,23 +33,23 @@ import us.ppgs.util.Crypt;
 @RequestMapping("/blog")
 public class BlogController {
 
-	@RequestMapping("")
+	@GetMapping("")
 	public String index() {
 		return "redirect:/blog/";
 	}
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public View indexSlash() {
 		return new InternalResourceView("/blog/index.html");
 	}
 
-	@RequestMapping("/url")
+	@PostMapping("/url")
 	@ResponseBody
 	public List<String> url(@RequestBody AUrl url) throws ClientProtocolException, IOException {
 		return doUrl(url.getName(), url.getUrl());
 	}
 	
-	@RequestMapping("/all")
+	@GetMapping("/all")
 	@ResponseBody
 	public String bunch() throws ClientProtocolException, IOException {
 		String[] ss = {

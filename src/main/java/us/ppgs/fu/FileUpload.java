@@ -8,8 +8,9 @@ import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,19 +41,19 @@ public class FileUpload {
 	}
 	
     @PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping("")
+	@GetMapping("")
 	public String indexb() {
 		return "redirect:/fu/";
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String indexSlash() {
-		return "fu/index";
+		return "/html/fu.html";
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "/files", method = RequestMethod.GET)
+    @GetMapping("/files")
     @ResponseBody
     public RestResponse handleFormUpload() {
     	
@@ -60,7 +61,7 @@ public class FileUpload {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "/go", method = RequestMethod.POST)
+    @PostMapping("/go")
     @ResponseBody
     public RestResponse handleFormUpload(@RequestParam("file") MultipartFile file, RedirectAttributes ra) {
 

@@ -3,10 +3,11 @@ package us.ppgs.linkfarm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import us.ppgs.config.ConfigFacility;
@@ -22,29 +23,29 @@ public class LinkFarmController {
 	@Autowired
 	private LinkModel lm;
 
-	@RequestMapping("")
+	@GetMapping("")
 	public String indexb() {
 		return "redirect:/lf/";
 	}
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String indexSlash() {
-		return "linkfarm/index";
+		return "/html/linkfarm.html";
 	}
 
-	@RequestMapping("/{page}")
+	@GetMapping("/{page}")
 	public String indexSlashPage(@PathVariable String page) {
-		return "linkfarm/index";
+		return "/html/linkfarm.html";
 	}
 
-    @RequestMapping("/links")
+    @GetMapping("/links")
     @ResponseBody
 	public RestResponse links(String page) throws ConfigException {
 		return new RestResponse(lm.getObjLinks(page), "", "");
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/update", method=RequestMethod.POST)
+    @PostMapping("/update")
     @ResponseBody
 	public RestResponse update(@RequestBody LFRequest lr) throws ConfigException {
 

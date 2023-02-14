@@ -1,16 +1,11 @@
-import React from 'react'; 
-import { render } from 'react-dom';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import LoginDialog from '../login/LoginDialog'
 import AppHeader from '../components/AppHeader';
 import TasksView from './tasksView'
 
-const renderApp = () => {
-  render(
-      <LoginDialog>
-        <AppHeader title='Tasks' home='../wiki' />
-        <TasksView />
-      </LoginDialog>,
-	document.getElementById('react')
-  );
-};
-renderApp();
+createRoot(document.getElementById('react'))
+  .render(<LoginDialog loginOptional={true}>
+              <AppHeader title='Tasks' home='../wiki' />
+              <TasksView />
+            </LoginDialog>); 

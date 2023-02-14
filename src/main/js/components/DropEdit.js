@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // properties
 // value = value to display
@@ -12,8 +12,8 @@ export default function DropEdit(props) {
 	}
 
     const { value, options } = props;
-    
-    const display = options.filter((opt) => opt.value == value)[0].text;
+    console.log(value)
+    console.log(JSON.stringify(options))    
 
     return <span>
             <select value={props.value} style={{cursor: 'pointer'}} onChange={(e) => handleInputChange(e)}>

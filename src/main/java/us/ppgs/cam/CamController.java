@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,18 +20,18 @@ import us.ppgs.config.ConfigFacility;
 @RequestMapping("/cam")
 public class CamController {
 	
-	@RequestMapping("")
+	@GetMapping("")
 	public String indexb() {
 		return "redirect:/cam/";
 	}
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String indexSlash() {
-		return "cam/index";
+		return "/html/cam.html";
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping("goSubDir")
+	@GetMapping("goSubDir")
 	@ResponseBody
 	public CamRet goSubDir(String subDir) {
 		File baseDir = new File(ConfigFacility.get("camDir", "C:\\temp"));

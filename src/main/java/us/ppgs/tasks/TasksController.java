@@ -1,12 +1,14 @@
 package us.ppgs.tasks;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.AllArgsConstructor;
@@ -19,14 +21,14 @@ public class TasksController {
 	@Autowired
 	private TasksDAO tDao;
 	
-	@RequestMapping("")
+	@GetMapping("")
 	public String indexb() {
 		return "redirect:/tasks/";
 	}
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String indexSlash() {
-		return "tasks/index";
+		return "/html/tasks.html";
 	}
 	
 	public static @Data class TaskReq {
@@ -40,11 +42,11 @@ public class TasksController {
 	@Data
 	@AllArgsConstructor
 	public static class Res {
-		private List<String> areas;
+		private Set<String> areas;
 		private List<TaskInfo> tasks;
 	}
 	
-	@RequestMapping(value="/get", method=RequestMethod.POST)
+	@PostMapping("/get")
 	@ResponseBody
 	public Res get(@RequestBody TaskReq req) {
 

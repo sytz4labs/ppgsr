@@ -5,11 +5,11 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class HostApp {

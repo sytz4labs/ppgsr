@@ -62,12 +62,12 @@ public class WikiServlet {
 
 	@GetMapping("/wiki/")
 	public String indexSlash() {
-		return "wiki/index";
+		return "/html/wiki.html";
 	}
 
     @GetMapping("/wiki/{page}")
 	public String page(@PathVariable String page, Model m) {
-		return "wiki/index";
+		return "/html/wiki.html";
     }
 
     public static @Data class WikiReq {

@@ -1,16 +1,7 @@
 import React from 'react'; 
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
-class HelloMessage extends React.Component {
-	render() {
-	  return (
-			<div>
+createRoot(document.getElementById('react'))
+  .render(<div>
 				Nothing happens here
-			</div>
-	  );
-	}
-  }
-  
-ReactDOM.render(
-	<HelloMessage />, document.getElementById('react')
-);
+			</div>);

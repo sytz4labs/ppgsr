@@ -9,9 +9,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import us.ppgs.budget.dao.BdgtDao;
@@ -30,18 +31,18 @@ public class BudgetServlet {
 	@Autowired
 	private BudgetModel bdgtMdl;
 	
-	@RequestMapping("")
+	@GetMapping("")
 	public String indexb() {
 		return "redirect:/budget/";
 	}
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String indexSlash() {
-		return "budget/index";
+		return "/html/budget.html";
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping("/trans")
+	@GetMapping("/trans")
     @ResponseBody
 	public TransData tranSpec() {
 		
@@ -50,7 +51,7 @@ public class BudgetServlet {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping("history")
+	@GetMapping("history")
 	@ResponseBody
 	public TransData history() {
 
@@ -62,7 +63,7 @@ public class BudgetServlet {
 
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseBody
-    @RequestMapping(value="/budgetHandler", method=RequestMethod.POST)
+    @PostMapping("/budgetHandler")
 	public TransData editHandler(@RequestBody NVRequest r) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, ConfigException, ParseException {
 
 		if (r.getName().equals("newTran")) {

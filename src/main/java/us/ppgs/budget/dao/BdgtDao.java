@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Repository;
@@ -26,7 +25,6 @@ public class BdgtDao {
 	private JdbcTemplate jt;
 	private Map<String, String> updates = null;
 	
-	@Autowired
 	public BdgtDao(DataSource ds) {
 		jt = new JdbcTemplate(ds);
 		updates = new HashMap<String, String>();
