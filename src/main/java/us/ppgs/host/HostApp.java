@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +16,7 @@ public class HostApp {
 
 	private Map<String, String> hosts = new TreeMap<String, String>();
 
-	@RequestMapping("/hosts")
+	@GetMapping("/hosts")
 	public void indexb(String host, String ip, HttpServletResponse res) throws IOException {
     	
     	String now = new Date().toString();

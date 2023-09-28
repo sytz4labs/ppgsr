@@ -12,8 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
@@ -34,7 +33,7 @@ public class MirrorServerServlet {
 		Files.write(Paths.get(logDir, sdf.format(now) + "_" + volName + ".log"), (stf.format(now) + " " + msg + "\n").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
 	}
 
-    @RequestMapping(value="/mirs", method=RequestMethod.POST)
+    @PostMapping("/mirs")
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		response.setContentType("text/plain");

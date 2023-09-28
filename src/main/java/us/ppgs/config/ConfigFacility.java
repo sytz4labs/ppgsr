@@ -3,7 +3,6 @@ package us.ppgs.config;
 import java.io.IOException;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,7 +17,6 @@ public class ConfigFacility {
 
 	private static ConfigDao configDao;
 
-	@Autowired
 	public ConfigFacility(ConfigDao configDao) {
 		ConfigFacility.configDao = configDao;
 	}

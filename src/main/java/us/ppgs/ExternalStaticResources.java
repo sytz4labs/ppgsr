@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class ExternalStaticResources {
 
     @Bean
-    public WebMvcConfigurer webMvcConfigurerAdapter() {
+    WebMvcConfigurer webMvcConfigurerAdapter() {
     	
     	boolean isWin = System.getProperty("os.name").toLowerCase().indexOf("win") >= 0;
         String filePath = isWin ? "/my/" : System.getenv("HOME") + "/www/";

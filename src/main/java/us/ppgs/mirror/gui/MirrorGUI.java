@@ -14,9 +14,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.InternalResourceView;
@@ -36,19 +37,19 @@ public class MirrorGUI {
 	@Autowired
 	private MirrorClient client;
 	
-	@RequestMapping("")
+	@GetMapping("")
 	public String index() {
 		return "redirect:/mirror/";
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping("/")
+	@GetMapping("/")
 	public View indexSlash() {
 		return new InternalResourceView("/mirror/index.html");
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/dirs")
+    @GetMapping(value="/dirs")
     @ResponseBody
 	public MirrorRestResponse dirs(String error) throws ConfigException {
 
@@ -57,7 +58,7 @@ public class MirrorGUI {
 	}
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/logs")
+    @GetMapping(value="/logs")
     @ResponseBody
 	public MirrorRestResponse logs(String logName) throws ConfigException, IOException {
 
@@ -78,7 +79,7 @@ public class MirrorGUI {
 	}
 
 //    @PreAuthorize("hasRole('ADMIN')")
-//    @RequestMapping(value="/log")
+//    @GetMapping(value="/log")
 //    @ResponseBody
 //	public MirrorRestResponse log(String logName) throws ConfigException, IOException {
 //
@@ -88,7 +89,7 @@ public class MirrorGUI {
 //
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/save", method=RequestMethod.POST)
+    @PostMapping("/save")
     @ResponseBody
 	public MirrorRestResponse save(@RequestBody MirrorCmdRequest mcr) throws ConfigException  {
 
@@ -152,7 +153,7 @@ public class MirrorGUI {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-	@RequestMapping(value = "/getdir", method = RequestMethod.POST, produces="application/json")
+	@PostMapping(value = "/getdir", produces="application/json")
 	@ResponseBody
 	public DirInfo postDir(@RequestBody DirReqInfo dir) {
 
@@ -177,7 +178,7 @@ public class MirrorGUI {
 		return di;
 	}
 
-	@RequestMapping("/kick")
+	@GetMapping("/kick")
 	public @ResponseBody MirrorRestResponse launch() throws InterruptedException, ConfigException {
 
 		boolean started = client.schedule();
@@ -186,7 +187,7 @@ public class MirrorGUI {
 	
 	private String dots = ".";
 	
-	@RequestMapping("/isRunning")
+	@GetMapping("/isRunning")
 	public @ResponseBody MirrorRestResponse isRunning() throws InterruptedException, ConfigException {
 
 		if (client.isRunning()) {

@@ -44,26 +44,22 @@ public class PpgsSecurityConfig {
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
     	
-        http.requiresChannel()
-		        .requestMatchers(r -> r.getHeader("x-forwarded-proto") != null)
-		        .requiresSecure()
-        	.and()
-        		.headers().frameOptions().sameOrigin()
-        	.and()
-        		.authorizeHttpRequests()
-        		.requestMatchers(new AntPathRequestMatcher("/**"), new AntPathRequestMatcher("/login"), new AntPathRequestMatcher("/pssdb/**"))
-		        .permitAll()
-            .and()
-            	.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
-            .and()
-                .formLogin().successHandler(authenticationSuccessHandler)
-            .and()
-            	.formLogin().failureHandler(authenticationFailureHandler)
-            .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))
-			.and()
-				.rememberMe().tokenRepository(persistentTokenRepository()).userDetailsService(null)
-				.tokenValiditySeconds(30 * 24 * 60 * 60).rememberMeCookieName("RMSESSION");
+        http.requiresChannel(c -> c
+        		.requestMatchers(r -> r.getHeader("x-forwarded-proto") != null)
+		        .requiresSecure())
+        	.headers(h -> h.frameOptions(c -> c.sameOrigin()))
+    		.authorizeHttpRequests(c -> c.requestMatchers(new AntPathRequestMatcher("/**"),
+    													  new AntPathRequestMatcher("/login"),
+    													  new AntPathRequestMatcher("/pssdb/**")).permitAll())
+    		
+        	.exceptionHandling(h -> h.authenticationEntryPoint(authenticationEntryPoint))
+
+            .formLogin(l -> l.successHandler(authenticationSuccessHandler))
+        	.formLogin(l -> l.failureHandler(authenticationFailureHandler))
+            .logout(l -> l.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))))
+			.rememberMe(r -> r.tokenRepository(persistentTokenRepository()).userDetailsService(null)
+							  .tokenValiditySeconds(30 * 24 * 60 * 60)
+							  .rememberMeCookieName("RMSESSION"));
 
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName(null);
