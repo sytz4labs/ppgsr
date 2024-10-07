@@ -50,7 +50,8 @@ public class PpgsSecurityConfig {
         	.headers(h -> h.frameOptions(c -> c.sameOrigin()))
     		.authorizeHttpRequests(c -> c.requestMatchers(new AntPathRequestMatcher("/**"),
     													  new AntPathRequestMatcher("/login"),
-    													  new AntPathRequestMatcher("/pssdb/**")).permitAll())
+    													  new AntPathRequestMatcher("/pssdb/**"),
+    													  new AntPathRequestMatcher("/zxing/**")).permitAll())
     		
         	.exceptionHandling(h -> h.authenticationEntryPoint(authenticationEntryPoint))
 
