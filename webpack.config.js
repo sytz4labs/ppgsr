@@ -12,6 +12,7 @@ module.exports = {
 		fu: './src/main/js/fu/fu.js',
 		linkfarm: './src/main/js/linkfarm/linkfarm.js',
 		tasks: './src/main/js/tasks/tasks.js',
+		qrs: './src/main/js/qr/qrs.js',
 		wiki: './src/main/js/wiki/wiki.js'
 	},
   output: {

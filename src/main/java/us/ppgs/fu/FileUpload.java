@@ -63,15 +63,15 @@ public class FileUpload {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/go")
     @ResponseBody
-    public RestResponse handleFormUpload(@RequestParam("file") MultipartFile file, RedirectAttributes ra) {
+    public RestResponse handleFormUpload(@RequestParam("file") MultipartFile pFile, RedirectAttributes ra) {
 
     	String success = null;
     	String error = null;
-    	if (!file.isEmpty()) {
+    	if (!pFile.isEmpty()) {
             try {
-				file.transferTo(new File(new File(ConfigFacility.get("fuDir", "/tmp")), file.getOriginalFilename()));
+				pFile.transferTo(new File(new File(ConfigFacility.get("fuDir", "/tmp")), pFile.getOriginalFilename()));
 	            // store the bytes somewhere
-				success = file.getOriginalFilename() + " uploaded";
+				success = pFile.getOriginalFilename() + " uploaded";
 			}
             catch (IOException e) {
 				error = "error " + e.getMessage();
