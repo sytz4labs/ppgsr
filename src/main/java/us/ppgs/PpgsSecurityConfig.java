@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 import us.ppgs.security.RESTAuthenticationEntryPoint;
 import us.ppgs.security.RESTAuthenticationFailureHandler;
@@ -43,21 +43,21 @@ public class PpgsSecurityConfig {
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
+
+    	http.redirectToHttps(h -> h.requestMatchers(r -> r.getHeader("x-forwarded-proto") != null));
     	
-        http.requiresChannel(c -> c
-        		.requestMatchers(r -> r.getHeader("x-forwarded-proto") != null)
-		        .requiresSecure())
-        	.headers(h -> h.frameOptions(c -> c.sameOrigin()))
-    		.authorizeHttpRequests(c -> c.requestMatchers(new AntPathRequestMatcher("/**"),
-    													  new AntPathRequestMatcher("/login"),
-    													  new AntPathRequestMatcher("/pssdb/**"),
-    													  new AntPathRequestMatcher("/zxing/**")).permitAll())
+    	var pprmBuilder = PathPatternRequestMatcher.withDefaults();
+    	
+        http.headers(h -> h.frameOptions(c -> c.sameOrigin()))
+    		.authorizeHttpRequests(c -> c.requestMatchers("/**", "/login", "/pssdb/**", "/zxing/**")
+    									 .permitAll())
     		
         	.exceptionHandling(h -> h.authenticationEntryPoint(authenticationEntryPoint))
 
             .formLogin(l -> l.successHandler(authenticationSuccessHandler))
         	.formLogin(l -> l.failureHandler(authenticationFailureHandler))
-            .logout(l -> l.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))))
+            .logout(l -> l.logoutRequestMatcher(pprmBuilder.matcher("/logout"))
+            			.logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))))
 			.rememberMe(r -> r.tokenRepository(persistentTokenRepository()).userDetailsService(null)
 							  .tokenValiditySeconds(30 * 24 * 60 * 60)
 							  .rememberMeCookieName("RMSESSION"));
@@ -65,7 +65,7 @@ public class PpgsSecurityConfig {
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName(null);
         http.csrf(csrf -> csrf
-        		.ignoringRequestMatchers(new AntPathRequestMatcher("/pssdb/**"))
+        		.ignoringRequestMatchers("/pssdb/**")
         		.csrfTokenRequestHandler(requestHandler)
         		.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
         
