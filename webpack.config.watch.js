@@ -18,7 +18,7 @@ module.exports = {
 	},
   output: {
     path: __dirname,
-		path : path.resolve( __dirname, 'bin/static/built/' ),
+		path : path.resolve( __dirname, 'bin/main/static/built/' ),
 		filename : '[name].bundle.js'
   },
   module: {
