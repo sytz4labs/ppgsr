@@ -133,7 +133,7 @@ export default function BudgetView() {
 							{transactions.transSpecs.map((tran, tranOrd) => 
 									<tr key={tranOrd} className={'bordered'} style={tranOrd % 2 == 0 ? {backgroundColor: '#eef'} :  {}}>
 										<td><FieldEdit value={tran.description} size='30' blank='BLANK' updateFunc={(value) => budgetHandler('ts.description|'+tran.id, value)}/></td>
-										<td><DropEdit value={tran.nmons} options={nMonsValues} updateFunc={(value) => budgetHandler('ts.nMons|'+tran.id, value)} /></td>
+										<td><DropEdit value={tran.nMons} options={nMonsValues} updateFunc={(value) => budgetHandler('ts.nMons|'+tran.id, value)} /></td>
 										<td><DropEdit value={tran.day} options={dayValues} updateFunc={(value) => budgetHandler('ts.day|'+tran.id, value)} /></td>
 										<td><DropEdit value={tran.type} options={specTypes} updateFunc={(value) => budgetHandler('ts.type|'+tran.id, value)} /></td>
 										<td style={{textAlign: 'right'}}><FieldEdit value={formatCurrency(tran.value)} size='8' blank='BLANK' updateFunc={(value) => budgetHandler('ts.value|'+tran.id, value)}/></td>
