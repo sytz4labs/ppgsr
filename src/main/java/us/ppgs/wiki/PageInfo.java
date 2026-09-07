@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public @Data class PageInfo {
-	public int id;
-	public int sort;
+	public Integer id;
+	public Integer sort;
 	public String page;
 	public String tab;
-	public long modified;
+	public Long modified;
 	public String contents;
 }
 

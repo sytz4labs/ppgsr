@@ -44,7 +44,7 @@ public class WikiServletDB {
     	
     	var pages = wikiDao.getPage(req.getPage());
     	if (pages.size() == 0) {
-    		pages.add(new PageInfo(-1, -1, req.getPage(), "", 0, "Undefined"));
+    		pages.add(new PageInfo(-1, -1, req.getPage(), "", 0L, "Undefined"));
     	}
 
 		return pages; 
