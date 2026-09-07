@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,8 +16,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TasksDAO implements ApplicationListener<ApplicationReadyEvent> {
 
-	@Autowired
-	private JdbcTemplate jt;
+	private final JdbcTemplate jt;
+
+	TasksDAO(JdbcTemplate jt) {
+		this.jt = jt;
+	}
 
 	@Override
 	public void onApplicationEvent(ApplicationReadyEvent event) {

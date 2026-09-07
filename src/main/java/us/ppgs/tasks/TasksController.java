@@ -3,7 +3,6 @@ package us.ppgs.tasks;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +17,11 @@ import lombok.Data;
 @RequestMapping("/tasks")
 public class TasksController {
 	
-	@Autowired
-	private TasksDAO tDao;
+	private final TasksDAO tDao;
+
+	TasksController(TasksDAO tDao) {
+		this.tDao = tDao;
+	}
 	
 	@GetMapping("")
 	public String indexb() {

@@ -1,6 +1,5 @@
 package us.ppgs.linkfarm;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +20,11 @@ import us.ppgs.util.info.RestResponse;
 @RequestMapping("/lf")
 public class LinkFarmController {
 	
-	@Autowired
-	private LinkModel lm;
+	private final LinkModel lm;
+
+	LinkFarmController(LinkModel lm) {
+		this.lm = lm;
+	}
 
 	@GetMapping("")
 	public String indexb() {

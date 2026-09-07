@@ -1,6 +1,5 @@
 package us.ppgs.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,8 +8,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class SecDAO implements ApplicationListener<ApplicationReadyEvent> {
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private final JdbcTemplate jdbcTemplate;
+
+	SecDAO(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 	
 	@Override
 	public void onApplicationEvent(ApplicationReadyEvent event) {

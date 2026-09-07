@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.dao.DuplicateKeyException;
@@ -16,8 +15,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ConfigDao implements ApplicationListener<ApplicationReadyEvent> {
 
-	@Autowired
-	private JdbcTemplate jt;
+	private final JdbcTemplate jt;
+
+	ConfigDao(JdbcTemplate jt) {
+		this.jt = jt;
+	}
 
 	@Override
 	public void onApplicationEvent(ApplicationReadyEvent event) {

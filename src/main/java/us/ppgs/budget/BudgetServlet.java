@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +24,13 @@ import us.ppgs.config.dao.ConfigException;
 @RequestMapping("/budget")
 public class BudgetServlet {
 	
-	@Autowired
-	private BdgtDao bdgtDao;
+	private final BdgtDao bdgtDao;
+	private final BudgetModel bdgtMdl;
 
-	@Autowired
-	private BudgetModel bdgtMdl;
+	BudgetServlet(BdgtDao bdgtDao, BudgetModel bdgtMdl) {
+		this.bdgtDao = bdgtDao;
+		this.bdgtMdl = bdgtMdl;
+	}
 	
 	@GetMapping("")
 	public String indexb() {

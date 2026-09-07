@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import us.ppgs.budget.dao.BdgtDao;
@@ -21,8 +20,11 @@ import us.ppgs.budget.info.BdgtTranSpecInfo;
 @Component
 public class BudgetModel {
 
-	@Autowired
-	private BdgtDao bdgtDao;
+	private final BdgtDao bdgtDao;
+
+	BudgetModel(BdgtDao bdgtDao) {
+		this.bdgtDao = bdgtDao;
+	}
 
     private void setDayWithLimits(Calendar cal, int day) {
     	if (day == 0) {

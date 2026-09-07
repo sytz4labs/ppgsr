@@ -2,7 +2,6 @@ package us.ppgs.wiki;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class WikiServletDB {
 	
-	@Autowired
-	private WikiDAO wikiDao;
+	private final WikiDAO wikiDao;
+
+	WikiServletDB(WikiDAO wikiDao) {
+		this.wikiDao = wikiDao;
+	}
 	
 	@GetMapping("/ewiki")
 	public String indexb() {
@@ -71,7 +73,7 @@ public class WikiServletDB {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/ewiki/saveMoveTab/{direction}")
     @ResponseBody
-	public List<PageInfo> saveMoveTab(@RequestBody PageInfo req, @PathVariable String direction) throws Exception {
+	public List<PageInfo> saveMoveTab(@RequestBody PageInfo req, @PathVariable("direction") String direction) throws Exception {
 
 		wikiDao.saveMoveTab(req, direction);
 

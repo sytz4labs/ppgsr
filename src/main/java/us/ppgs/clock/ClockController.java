@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +27,7 @@ import us.ppgs.config.dao.ConfigException;
 @RequestMapping("/clock")
 public class ClockController {
 
-	@Autowired
-	ClockModel clkMdl;
+	final ClockModel clkMdl;
 	
 	@Data
 	@AllArgsConstructor
@@ -42,10 +40,11 @@ public class ClockController {
 	
 	private ZoneNode rootZone = new ZoneNode(null, null, null, null);
 	
-	public ClockController() {
+	public ClockController(ClockModel clkMdl) {
 		for (var zoneId : ZoneId.getAvailableZoneIds()) {
 			addZone(rootZone, ZoneId.of(zoneId), zoneId);
 		}
+		this.clkMdl = clkMdl;
 	}
 	
 	private void addZone(ZoneNode zn, ZoneId zoneId2, String name) {

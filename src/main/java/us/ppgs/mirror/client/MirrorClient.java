@@ -2,16 +2,18 @@ package us.ppgs.mirror.client;
 
 import java.util.concurrent.Future;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MirrorClient {
 
-	@Autowired
-	private MirrorThread thread;
+	private final MirrorThread thread;
 	private Future<String> status = null;
+
+	MirrorClient(MirrorThread thread) {
+		this.thread = thread;
+	}
 	
 	public boolean isRunning() {
 		return !status.isDone();

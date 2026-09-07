@@ -2,7 +2,6 @@ package us.ppgs;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -26,15 +25,17 @@ import us.ppgs.security.RESTAuthenticationSuccessHandler;
 @EnableWebSecurity
 public class PpgsSecurityConfig {
 
-	@Autowired
-	DataSource dataSource;
+	final DataSource dataSource;
+    private final RESTAuthenticationEntryPoint authenticationEntryPoint;
+    private final RESTAuthenticationFailureHandler authenticationFailureHandler;
+    private final RESTAuthenticationSuccessHandler authenticationSuccessHandler;
 
-    @Autowired
-    private RESTAuthenticationEntryPoint authenticationEntryPoint;
-    @Autowired
-    private RESTAuthenticationFailureHandler authenticationFailureHandler;
-    @Autowired
-    private RESTAuthenticationSuccessHandler authenticationSuccessHandler;
+    PpgsSecurityConfig(DataSource dataSource, RESTAuthenticationEntryPoint authenticationEntryPoint, RESTAuthenticationFailureHandler authenticationFailureHandler, RESTAuthenticationSuccessHandler authenticationSuccessHandler) {
+        this.dataSource = dataSource;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.authenticationFailureHandler = authenticationFailureHandler;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
+    }
     
     @Bean
     UserDetailsManager users(DataSource dataSource) {

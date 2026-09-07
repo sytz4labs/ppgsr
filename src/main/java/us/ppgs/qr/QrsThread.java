@@ -44,7 +44,7 @@ public class QrsThread extends Thread {
 	public void run() {
 
 		try {
-			var fileName = Path.of("C:/my/_pss/system-1.zip");
+			var fileName = Path.of("C:/my/_pss/Paul2020.pdf");
 			var fileBytes = Files.readAllBytes(fileName);
 			int pos = 0;
 			
