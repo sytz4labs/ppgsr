@@ -52,7 +52,7 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 			release = incrementRelease(2);
 		}
 
-		if (release == 3) {
+//		if (release == 3) {
 //			jt.execute("""
 //					create table ewiki2 (
 //					    id int auto_increment,
@@ -64,14 +64,14 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 //					    unique (page, tab),
 //					    primary key (id))
 //					""");
-			
-			for (var page : jt.query("select * from ewiki", new EwikiExtractor(bEncrypt))) {
-				page.setId(-1);
-				savePageContents(page);
-			}
-
-			release = incrementRelease(release);
-		}
+//			
+//			for (var page : jt.query("select * from ewiki", new EwikiExtractor(bEncrypt))) {
+//				page.setId(-1);
+//				savePageContents(page);
+//			}
+//
+//			release = incrementRelease(release);
+//		}
 	}
 
 	private Integer incrementRelease(Integer release) {
@@ -81,15 +81,15 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 	}
 
 	private BytesEncryptor bEncrypt = Encryptors.stronger("HIy5vWBCYugjwRHmDLzf27Ti00Ak6EkSoAjmvQIgADzpq85Fr5bu8zqxCROE7bl", "29E510B3D6677AF0C29FA31B0C88C57F188669C606DBF7245A755AC9A994BCDB");
-	private BytesEncryptor e2 = AesGcmBytesEncryptor.withPassword("HIy5vWBCYugjwRHmDLzf27Ti00Ak6EkSoAjmvQIgADzpq85Fr5bu8zqxCROE7bl", "29E510B3D6677AF0C29FA31B0C88C57F188669C606DBF7245A755AC9A994BCDB").build();
+//	private BytesEncryptor e2 = AesGcmBytesEncryptor.withPassword("HIy5vWBCYugjwRHmDLzf27Ti00Ak6EkSoAjmvQIgADzpq85Fr5bu8zqxCROE7bl", "29E510B3D6677AF0C29FA31B0C88C57F188669C606DBF7245A755AC9A994BCDB").build();
 
 	private class EwikiExtractor implements RowMapper<PageInfo> {
 		
-		BytesEncryptor be;
-		public EwikiExtractor(BytesEncryptor be) {
-			this.be = be;
-		}
-		
+//		BytesEncryptor be;
+//		public EwikiExtractor(BytesEncryptor be) {
+//			this.be = be;
+//		}
+//		
 		@Override
 		public PageInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
 			return new PageInfo(rs.getInt("id"),
@@ -97,53 +97,54 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 					rs.getString("page"),
 					rs.getString("tab"),
 					rs.getLong("modified"),
-					new String(be.decrypt(Base64.getDecoder().decode(rs.getString("contents")))));
+					new String(bEncrypt.decrypt(Base64.getDecoder().decode(rs.getString("contents")))));
+//					new String(be.decrypt(Base64.getDecoder().decode(rs.getString("contents")))));
 		}
 	}
 	
 	public List<PageInfo> getPage(String page) {
 
-		return jt.query("select * from ewiki2 where page = ? order by sort",
-				new EwikiExtractor(e2),
+		return jt.query("select * from ewiki where page = ? order by sort",
+				new EwikiExtractor(),
 				page);
 	}
 	
 	public void savePageContents(PageInfo req) {
 		if (req.getId() < 0) {
-			jt.update("insert into ewiki2 (sort,page,tab,modified,contents)" +
+			jt.update("insert into ewiki (sort,page,tab,modified,contents)" +
 					"values (?,?,?,?,?)",
 					req.getSort(),
 					req.getPage(),
 					req.getTab(),
 					System.currentTimeMillis(),
-					Base64.getEncoder().encodeToString(e2.encrypt(req.getContents().getBytes())));
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt(req.getContents().getBytes())));
 		}
 		else {
-			jt.update("update ewiki2 set modified=?, contents=? where id=?",
+			jt.update("update ewiki set modified=?, contents=? where id=?",
 					System.currentTimeMillis(),
-					Base64.getEncoder().encodeToString(e2.encrypt(req.getContents().getBytes())),
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt(req.getContents().getBytes())),
 					req.getId());
 		}
 	}
 
 	public void savePageTab(PageInfo req) {
 		if (req.getId() < 0) {
-			jt.update("insert into ewiki2 (sort,page,tab,modified,contents)" +
+			jt.update("insert into ewiki (sort,page,tab,modified,contents)" +
 					"values (?,?,?,?,?)",
 					req.getSort(),
 					req.getPage(),
 					req.getTab(),
 					System.currentTimeMillis(),
-					Base64.getEncoder().encodeToString(e2.encrypt("".getBytes())));
-			jt.execute("update ewiki2 set sort = id where sort = -1");
+					Base64.getEncoder().encodeToString(bEncrypt.encrypt("".getBytes())));
+			jt.execute("update ewiki set sort = id where sort = -1");
 		}
 		else {
 			if (req.getTab().trim().length() == 0) {
-				jt.update("delete ewiki2 where id=?",
+				jt.update("delete ewiki where id=?",
 						req.getId());
 			}
 			else {
-				jt.update("update ewiki2 set tab=? where id=?",
+				jt.update("update ewiki set tab=? where id=?",
 						req.getTab(),
 						req.getId());
 			}
@@ -156,7 +157,7 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 		var sorts = new ArrayList<Integer>();
 		var indexA = new AtomicInteger();
 		
-		jt.query("select id, sort from ewiki2 where page = ? order by sort", new RowCallbackHandler() {
+		jt.query("select id, sort from ewiki where page = ? order by sort", new RowCallbackHandler() {
 			private int index = 0;
 			@Override
 			public void processRow(ResultSet rs) throws SQLException {
@@ -178,7 +179,7 @@ public class WikiDAO implements ApplicationListener<ApplicationReadyEvent> {
 		}
 		
 		for (int i = 0; i < ids.size(); i++) {
-			jt.update("update ewiki2 set sort = ? where id = ?", sorts.get(i), ids.get(i));
+			jt.update("update ewiki set sort = ? where id = ?", sorts.get(i), ids.get(i));
 		}
 	}
 }
