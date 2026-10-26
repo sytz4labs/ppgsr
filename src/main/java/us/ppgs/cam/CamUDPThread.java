@@ -47,9 +47,7 @@ public class CamUDPThread extends Thread {
 			while (!done.get()) {
 				try {
 					serverSocket.receive(receivePacket);
-					var msg = new String(receivePacket.getData(), 0, receivePacket.getLength());
-					System.out.println(receivePacket.getAddress() + " " + msg);
-					socket.send(msg);
+					socket.send(new String(receivePacket.getData(), 0, receivePacket.getLength()));
 				}
 				catch (SocketTimeoutException ste) {
 					socket.send(null);
